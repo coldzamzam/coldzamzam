@@ -44,15 +44,15 @@ export default function ContactSection() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.15 + i * 0.1 }}
                 whileHover={{ y: -6, scale: 1.05 }}
-                className="hud-panel group w-28 h-28 flex flex-col items-center justify-center gap-3 hover:shadow-[0_0_30px_rgba(34,211,238,0.35)]"
+                className="hud-panel group w-28 h-28 flex flex-col items-center justify-center gap-3 hover:shadow-[0_8px_30px_rgba(245,158,11,0.15)]"
               >
-                <span className="text-cyan-200 group-hover:text-cyan-300 transition-colors">{icon}</span>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-slate-300">{c.label}</span>
+                <span className="text-zinc-400 group-hover:text-amber-400 transition-colors">{icon}</span>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-400 group-hover:text-zinc-200 transition-colors">{c.label}</span>
               </motion.a>
             );
           })}
         </div>
-        <p className="mt-16 font-mono text-[10px] uppercase tracking-widest text-slate-500">
+        <p className="mt-16 font-mono text-[10px] uppercase tracking-widest text-zinc-500">
           © {new Date().getFullYear()} {ME.name} // Built with Next.js
         </p>
       </div>

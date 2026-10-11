@@ -18,10 +18,10 @@ export default function SplashScreen({ progress }: SplashScreenProps) {
       key="splash"
       exit={{ opacity: 0, filter: "blur(8px)" }}
       transition={{ duration: 0.6 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#050810]"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#0a0b0e]"
     >
       <div className="w-[min(420px,80vw)]">
-        <div className="flex justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-cyan-300/70">
+        <div className="flex justify-between font-mono text-[10px] uppercase tracking-[0.25em] text-amber-400/90">
           <span>// Initializing</span>
           <span>{Math.round(progress).toString().padStart(3, "0")}%</span>
         </div>
@@ -32,12 +32,12 @@ export default function SplashScreen({ progress }: SplashScreenProps) {
 
         <div className="mt-5 h-[2px] w-full bg-white/10 overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-cyan-400 to-violet-400 shadow-[0_0_12px_rgba(34,211,238,0.9)] transition-[width] duration-75 ease-linear"
+            className="h-full bg-gradient-to-r from-amber-500 to-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.5)] transition-[width] duration-75 ease-linear"
             style={{ width: `${progress}%` }}
           />
         </div>
 
-        <p className="mt-3 font-mono text-xs text-slate-400 h-4">{phrase}</p>
+        <p className="mt-3 font-mono text-xs text-zinc-400 h-4">{phrase}</p>
       </div>
     </motion.div>
   );

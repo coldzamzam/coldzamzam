@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #050810;
-  --foreground: #e6f1ff;
-  --panel: rgba(10, 18, 34, 0.62);
-  --line: rgba(120, 190, 255, 0.14);
-  --cyan: #22d3ee;
-  --violet: #a78bfa;
+  --background: #0a0b0e;
+  --foreground: #f4f4f5;
+  --panel: rgba(18, 20, 26, 0.72);
+  --line: rgba(255, 255, 255, 0.08);
+  --amber: #f59e0b;
+  --amber-light: #fbbf24;
 }
 
 @theme inline {
@@ -30,7 +30,7 @@ body {
 }
 
 ::selection {
-  background: rgba(34, 211, 238, 0.35);
+  background: rgba(245, 158, 11, 0.25);
   color: #fff;
 }
 
@@ -48,19 +48,27 @@ body {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
-  transition: border-color 0.4s, box-shadow 0.4s, background 0.4s;
+  transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
 }
 .hud-panel:hover {
-  border-color: rgba(34, 211, 238, 0.55);
-  background: rgba(12, 24, 44, 0.8);
+  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(24, 27, 35, 0.85);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .text-glow {
-  text-shadow: 0 0 24px rgba(34, 211, 238, 0.45);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
 .text-gradient {
-  background: linear-gradient(90deg, #67e8f9 0%, #a78bfa 100%);
+  background: linear-gradient(180deg, #ffffff 20%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-amber {
+  background: linear-gradient(135deg, #fef08a 0%, #f59e0b 60%, #b45309 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -84,8 +92,8 @@ body {
   height: 1.1em;
   margin-left: 2px;
   vertical-align: text-bottom;
-  background: var(--cyan);
-  box-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+  background: var(--amber);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
   animation: blink 1s steps(1) infinite;
 }
 

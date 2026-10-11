@@ -16,17 +16,17 @@ export default function AboutSection() {
           className="hud-panel aspect-[3/4] flex items-end justify-center relative overflow-hidden"
         >
           {/* Placeholder portrait: replace with <Image src="/me.jpg" /> */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(34,211,238,0.25),transparent_60%)]" />
-          <span className="absolute top-1/3 font-lagu font-bold text-8xl text-gradient flicker">AZ</span>
-          <div className="relative w-full p-3 font-mono text-[10px] uppercase tracking-widest text-cyan-100/70 border-t border-cyan-300/20 bg-black/30">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(245,158,11,0.12),transparent_60%)]" />
+          <span className="absolute top-1/3 font-lagu font-bold text-8xl text-zinc-100/90 flicker">AZ</span>
+          <div className="relative w-full p-3 font-mono text-[10px] uppercase tracking-widest text-zinc-400 border-t border-white/10 bg-black/40">
             ID // AQSA_ZAMZAMI
           </div>
         </motion.div>
 
         <div>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="space-y-4">
-            {ME.bio.map((p) => <p key={p} className="text-slate-300 leading-relaxed">{p}</p>)}
-            <p className="font-mono text-xs uppercase tracking-widest text-cyan-300">📍 {ME.location}</p>
+            {ME.bio.map((p) => <p key={p} className="text-zinc-300 leading-relaxed">{p}</p>)}
+            <p className="font-mono text-xs uppercase tracking-widest text-amber-400">📍 {ME.location}</p>
           </motion.div>
 
           <div className="mt-8 grid grid-cols-3 gap-4">
@@ -39,8 +39,8 @@ export default function AboutSection() {
                 transition={{ delay: 0.2 + i * 0.1 }}
                 className="hud-panel p-4 text-center"
               >
-                <div className="font-lagu text-4xl text-white text-glow">{s.value}</div>
-                <div className="mt-1 font-mono text-[10px] uppercase tracking-widest text-cyan-200/60">{s.label}</div>
+                <div className="font-lagu text-4xl text-zinc-100">{s.value}</div>
+                <div className="mt-1 font-mono text-[10px] uppercase tracking-widest text-zinc-500">{s.label}</div>
               </motion.div>
             ))}
           </div>

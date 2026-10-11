@@ -23,7 +23,7 @@ export default function CustomCursor() {
       const hovering = (e.target as Element | null)?.closest?.(INTERACTIVE);
       if (imgRef.current) {
         imgRef.current.style.transform = hovering ? "scale(1.3)" : "scale(1)";
-        imgRef.current.style.filter = hovering ? "drop-shadow(0 0 8px rgba(34,211,238,0.9))" : "none";
+        imgRef.current.style.filter = hovering ? "drop-shadow(0 0 8px rgba(245,158,11,0.75))" : "none";
       }
     };
 

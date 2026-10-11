@@ -19,12 +19,12 @@ export function SectionHeading({ index, title, subtitle }: SectionHeadingProps) 
       transition={{ duration: 0.7 }}
       className="mb-12"
     >
-      <span className="font-mono text-sm text-cyan-400">{`// ${index}`}</span>
+      <span className="font-mono text-sm text-amber-400">{`// ${index}`}</span>
       <h2 className="mt-2 font-lagu font-bold uppercase tracking-tight text-4xl md:text-6xl text-white">
         <ScrambleText text={title} />
       </h2>
-      {subtitle && <p className="mt-3 font-mono text-xs uppercase tracking-[0.25em] text-slate-400">{subtitle}</p>}
-      <div className="mt-5 h-[2px] w-32 bg-gradient-to-r from-cyan-400 via-violet-400 to-transparent shadow-[0_0_12px_rgba(34,211,238,0.6)]" />
+      {subtitle && <p className="mt-3 font-mono text-xs uppercase tracking-[0.25em] text-zinc-400">{subtitle}</p>}
+      <div className="mt-5 h-[2px] w-24 bg-gradient-to-r from-amber-400 via-amber-400/40 to-transparent" />
     </motion.div>
   );
 }

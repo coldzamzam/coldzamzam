@@ -68,30 +68,30 @@ function HeroVisual() {
     >
       <motion.div style={{ rotateX, rotateY, transformStyle: "preserve-3d" }} className="relative w-full h-full">
         <motion.div
-          className="absolute inset-0 rounded-full border border-dashed border-cyan-300/25"
+          className="absolute inset-0 rounded-full border border-dashed border-zinc-800"
           animate={{ rotate: 360 }}
           transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
         />
         <motion.div
-          className="absolute inset-[12%] rounded-full border border-violet-400/30"
+          className="absolute inset-[12%] rounded-full border border-zinc-700/60"
           animate={{ rotate: -360 }}
           transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
         >
-          <span className="absolute -top-1 left-1/2 w-2 h-2 rounded-full bg-violet-400 shadow-[0_0_12px_rgba(167,139,250,1)]" />
+          <span className="absolute -top-1 left-1/2 w-2 h-2 rounded-full bg-zinc-400 shadow-[0_0_8px_rgba(255,255,255,0.4)]" />
         </motion.div>
         <motion.div
-          className="absolute inset-[26%] rounded-full border border-cyan-300/40"
+          className="absolute inset-[26%] rounded-full border border-amber-500/30"
           animate={{ rotate: 360 }}
           transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
         >
-          <span className="absolute top-1/2 -right-1 w-2 h-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,1)]" />
+          <span className="absolute top-1/2 -right-1 w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.8)]" />
         </motion.div>
 
         {/* Core */}
-        <div className="absolute inset-[36%] rounded-full bg-[radial-gradient(circle,rgba(34,211,238,0.35),rgba(167,139,250,0.15)_55%,transparent_70%)] flex items-center justify-center [transform:translateZ(40px)]">
+        <div className="absolute inset-[36%] rounded-full bg-[radial-gradient(circle,rgba(245,158,11,0.18),transparent_70%)] flex items-center justify-center [transform:translateZ(40px)]">
           <motion.span
-            className="font-lagu font-bold text-4xl text-white text-glow"
-            animate={{ opacity: [0.7, 1, 0.7] }}
+            className="font-lagu font-bold text-4xl text-zinc-100"
+            animate={{ opacity: [0.8, 1, 0.8] }}
             transition={{ duration: 3, repeat: Infinity }}
           >
             {ME.name.split(" ").map((w) => w[0]).join("")}
@@ -101,7 +101,7 @@ function HeroVisual() {
         {chips.map((chip, i) => (
           <motion.span
             key={chip}
-            className={`absolute ${chipPos[i]} px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-cyan-100 bg-[#0a1222]/80 border border-cyan-300/30 backdrop-blur [transform:translateZ(70px)]`}
+            className={`absolute ${chipPos[i]} px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-zinc-300 bg-[#12141a]/90 border border-white/10 backdrop-blur [transform:translateZ(70px)]`}
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 3 + i * 0.6, repeat: Infinity, ease: "easeInOut" }}
           >
@@ -126,12 +126,12 @@ export default function HeroSection() {
     <section id="hero" className="relative z-10 min-h-screen flex items-center pt-24 pb-20">
       <div className="w-full max-w-6xl mx-auto px-6 md:px-12 grid lg:grid-cols-[1.25fr_1fr] gap-12 items-center">
         <div>
-          <motion.div {...fadeUp(0.1)} className="inline-flex items-center gap-2 px-3 py-1.5 border border-emerald-300/20 bg-emerald-400/5 font-mono text-[10px] uppercase tracking-[0.25em] text-emerald-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)] animate-pulse" />
+          <motion.div {...fadeUp(0.1)} className="inline-flex items-center gap-2 px-3 py-1.5 border border-emerald-500/20 bg-emerald-500/5 font-mono text-[10px] uppercase tracking-[0.25em] text-emerald-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse" />
             Available for work
           </motion.div>
 
-          <motion.p {...fadeUp(0.2)} className="mt-8 font-mono text-sm text-cyan-300/80">
+          <motion.p {...fadeUp(0.2)} className="mt-8 font-mono text-sm text-amber-400/90">
             {"// hello, I'm"}
           </motion.p>
 
@@ -141,12 +141,12 @@ export default function HeroSection() {
             <ScrambleText text={rest.join(" ")} delay={450} className="text-gradient" />
           </motion.h1>
 
-          <motion.p {...fadeUp(0.4)} className="mt-6 font-mono text-base md:text-lg text-slate-200 h-7">
-            <span className="text-cyan-400">&gt; </span>
+          <motion.p {...fadeUp(0.4)} className="mt-6 font-mono text-base md:text-lg text-zinc-300 h-7">
+            <span className="text-amber-400">&gt; </span>
             <TypedRoles roles={ME.roles} />
           </motion.p>
 
-          <motion.p {...fadeUp(0.5)} className="mt-6 max-w-lg text-slate-400 leading-relaxed">
+          <motion.p {...fadeUp(0.5)} className="mt-6 max-w-lg text-zinc-400 leading-relaxed">
             {ME.tagline}
           </motion.p>
 
@@ -154,7 +154,7 @@ export default function HeroSection() {
             <button
               id="hero-projects"
               onClick={() => scrollToId("projects")}
-              className="group flex items-center gap-2 px-7 py-3 bg-gradient-to-r from-cyan-400 to-violet-400 text-[#050810] font-mono text-xs font-bold uppercase tracking-widest rounded-sm shadow-[0_0_24px_rgba(34,211,238,0.35)] hover:shadow-[0_0_40px_rgba(34,211,238,0.6)] transition-shadow"
+              className="group flex items-center gap-2 px-7 py-3 bg-amber-400 hover:bg-amber-300 text-zinc-950 font-mono text-xs font-bold uppercase tracking-widest rounded-sm shadow-[0_0_20px_rgba(245,158,11,0.25)] hover:shadow-[0_0_28px_rgba(245,158,11,0.4)] transition-all"
             >
               View Projects
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -162,7 +162,7 @@ export default function HeroSection() {
             <a
               id="hero-cv"
               href={ME.resumeUrl}
-              className="flex items-center gap-2 px-7 py-3 border border-cyan-300/30 hover:border-cyan-300 hover:bg-cyan-400/10 transition-colors rounded-sm font-mono text-xs uppercase tracking-widest text-cyan-100"
+              className="flex items-center gap-2 px-7 py-3 border border-zinc-750 hover:border-amber-400/50 hover:bg-amber-400/5 transition-colors rounded-sm font-mono text-xs uppercase tracking-widest text-zinc-300 hover:text-white"
             >
               <Download size={14} /> Download CV
             </a>
@@ -171,8 +171,8 @@ export default function HeroSection() {
           <motion.div {...fadeUp(0.7)} className="mt-12 flex gap-10">
             {ME.stats.map((s) => (
               <div key={s.label}>
-                <div className="font-lagu font-bold text-3xl text-white">{s.value}</div>
-                <div className="mt-1 font-mono text-[10px] uppercase tracking-widest text-slate-500">{s.label}</div>
+                <div className="font-lagu font-bold text-3xl text-zinc-100">{s.value}</div>
+                <div className="mt-1 font-mono text-[10px] uppercase tracking-widest text-zinc-500">{s.label}</div>
               </div>
             ))}
           </motion.div>
@@ -190,14 +190,14 @@ export default function HeroSection() {
         transition={{ delay: 1.2 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 hover:opacity-100"
       >
-        <span className="w-5 h-8 rounded-full border border-cyan-300/50 flex justify-center pt-1.5">
+        <span className="w-5 h-8 rounded-full border border-zinc-700 flex justify-center pt-1.5">
           <motion.span
-            className="w-1 h-1.5 rounded-full bg-cyan-300"
+            className="w-1 h-1.5 rounded-full bg-amber-400"
             animate={{ y: [0, 10, 0], opacity: [1, 0.2, 1] }}
             transition={{ duration: 1.6, repeat: Infinity }}
           />
         </span>
-        <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-cyan-300">Scroll</span>
+        <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-zinc-500">Scroll</span>
       </motion.button>
     </section>
   );
