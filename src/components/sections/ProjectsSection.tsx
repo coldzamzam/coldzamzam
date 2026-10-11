@@ -2,16 +2,35 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, ExternalLink } from "lucide-react";
+import { ChevronRight, ExternalLink, MoveRight } from "lucide-react";
 import { PROJECTS } from "@/data/portfolio";
-import SectionShell from "@/components/layout/SectionShell";
+import { SectionHeading } from "@/components/layout/SectionShell";
+import HorizontalScrollWrapper from "@/components/layout/HorizontalScrollWrapper";
 
 export default function ProjectsSection() {
   const [openId, setOpenId] = useState<string | null>(null);
 
   return (
-    <SectionShell id="projects" index="01" title="Journey Log" subtitle="Click a node to expand the record" className="w-max">
-      <div className="relative">
+    <section id="projects" className="relative z-10">
+     <HorizontalScrollWrapper>
+      {/* Intro panel, aligned with the page's centered container */}
+      <div
+        className="flex-shrink-0 h-full flex flex-col justify-center pr-20 w-[min(560px,90vw)] box-content"
+        style={{ paddingLeft: "max(1.5rem, calc((100vw - 72rem) / 2 + 3rem))" }}
+      >
+        <SectionHeading index="01" title="Projects" subtitle="Selected work" />
+        <p className="text-slate-400 leading-relaxed max-w-sm">
+          A collection of things I&apos;ve built. Keep scrolling to move through the timeline, and click a card to expand it.
+        </p>
+        <div className="mt-8 flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest text-cyan-300">
+          <span>{String(PROJECTS.length).padStart(2, "0")} projects</span>
+          <motion.span animate={{ x: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+            <MoveRight size={16} />
+          </motion.span>
+        </div>
+      </div>
+
+      <div className="relative h-full flex items-center">
         {/* Glowing path */}
         <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-cyan-300/20 -translate-y-1/2 overflow-hidden pointer-events-none">
           <motion.div
@@ -21,7 +40,7 @@ export default function ProjectsSection() {
           />
         </div>
 
-        <div className="flex gap-16 items-center relative pr-32">
+        <div className="flex gap-16 items-center relative pr-[15vw]">
           {PROJECTS.map((proj, i) => {
             const open = openId === proj.id;
             const top = i % 2 === 0;
@@ -91,7 +110,7 @@ export default function ProjectsSection() {
 
                     {!open && (
                       <div className="mt-4 flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-slate-500">
-                        <span>View Record</span>
+                        <span>View details</span>
                         <ChevronRight size={14} />
                       </div>
                     )}
@@ -102,6 +121,7 @@ export default function ProjectsSection() {
           })}
         </div>
       </div>
-    </SectionShell>
+     </HorizontalScrollWrapper>
+    </section>
   );
 }

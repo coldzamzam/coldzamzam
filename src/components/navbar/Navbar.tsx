@@ -19,13 +19,7 @@ export default function Navbar() {
 
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
-    const element = document.getElementById(id);
-    if (element) {
-      // In a horizontal parallax setup, the vertical scroll Y equals the horizontal scroll X
-      // So we map the element's offsetLeft directly to window.scrollTo top.
-      const offsetLeft = element.offsetLeft;
-      window.scrollTo({ top: offsetLeft, behavior: "smooth" });
-    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -40,12 +34,15 @@ export default function Navbar() {
         >
           <nav className="flex justify-between items-center max-w-7xl mx-auto">
             {/* Wordmark */}
-            <div className="font-lagu text-xl font-bold tracking-widest text-white text-glow">
-              AQSA.
-            </div>
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="font-lagu text-xl font-bold tracking-widest text-white text-glow"
+            >
+              AQSA<span className="text-cyan-400">.</span>
+            </button>
             
             {/* Links */}
-            <div className="flex gap-2">
+            <div className="hidden md:flex gap-2">
               {SECTIONS.map((section) => (
                 <NavLink
                   key={section.id}

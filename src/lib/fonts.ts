@@ -26,9 +26,3 @@ export const laguSans = localFont({
   variable: "--font-lagu-sans",
   display: "swap",
 });
-
-export const solarisScript = localFont({
-  src: "../../public/font/solaris-3-script/Solaris-3 Script.otf",
-  variable: "--font-solaris-script",
-  display: "swap",
-});

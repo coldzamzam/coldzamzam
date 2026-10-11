@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
-import { laguSans, solarisScript } from "@/lib/fonts";
+import { laguSans } from "@/lib/fonts";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -12,7 +12,7 @@ import CustomCursor from "@/components/shared/CustomCursor";
 
 export const metadata: Metadata = {
   title: "Aqsa Zamzami // Fullstack Developer Portfolio",
-  description: "Portfolio of Aqsa Zamzami, a fullstack developer and software engineer. Projects, experience, and tech stack in an interactive game-UI inspired experience.",
+  description: "Portfolio of Aqsa Zamzami, a fullstack developer and software engineer. Selected projects, experience, and tech stack.",
 };
 
 export default function RootLayout({
@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${laguSans.variable} ${solarisScript.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${laguSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans relative overflow-x-hidden bg-[#050810] text-slate-100">
         <CustomCursor />

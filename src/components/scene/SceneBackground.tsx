@@ -10,60 +10,57 @@ export default function SceneBackground() {
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       if (spotRef.current) {
-        spotRef.current.style.background = `radial-gradient(420px circle at ${e.clientX}px ${e.clientY}px, rgba(34,211,238,0.14), transparent 70%)`;
+        spotRef.current.style.background = `radial-gradient(420px circle at ${e.clientX}px ${e.clientY}px, rgba(34,211,238,0.12), transparent 70%)`;
       }
     };
     window.addEventListener("mousemove", onMove, { passive: true });
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
-  const scanline = "absolute w-[80vw] h-[2px] bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.9),0_0_50px_rgba(34,211,238,0.5)] pointer-events-none";
-
   return (
     <div className="fixed inset-0 z-[-1] bg-[#050810] overflow-hidden">
       {/* Deep base gradient */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,#0e1a33_0%,#070c18_55%,#03050a_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,#0d1830_0%,#060a15_55%,#03050a_100%)]" />
 
-      {/* Static grid */}
+      {/* Drifting aurora glows */}
+      <motion.div
+        className="absolute -top-[20%] -left-[10%] w-[55vw] h-[55vw] rounded-full bg-cyan-500/15 blur-[120px]"
+        animate={{ x: [0, 120, 0], y: [0, 80, 0] }}
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute -bottom-[25%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-violet-500/15 blur-[120px]"
+        animate={{ x: [0, -100, 0], y: [0, -60, 0] }}
+        transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Grid, faded towards the edges */}
       <div
-        className="absolute inset-0 opacity-[0.18]"
+        className="absolute inset-0"
         style={{
-          backgroundImage: `linear-gradient(to right, #5aa9ff 1px, transparent 1px), linear-gradient(to bottom, #5aa9ff 1px, transparent 1px)`,
-          backgroundSize: "40px 40px",
+          backgroundImage: `linear-gradient(to right, rgba(90,169,255,0.10) 1px, transparent 1px), linear-gradient(to bottom, rgba(90,169,255,0.10) 1px, transparent 1px)`,
+          backgroundSize: "48px 48px",
+          maskImage: "radial-gradient(ellipse at 50% 40%, black 25%, transparent 75%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 50% 40%, black 25%, transparent 75%)",
         }}
       />
 
-      {/* Masked glowing rain along grid lines */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          WebkitMaskImage: `linear-gradient(to right, black 1px, transparent 1px), linear-gradient(to bottom, black 1px, transparent 1px)`,
-          WebkitMaskSize: "40px 40px",
-        }}
+      {/* Slow horizontal scan beam */}
+      <motion.div
+        className="absolute inset-x-0 h-24 pointer-events-none"
+        initial={{ top: "-10%" }}
+        animate={{ top: "110%" }}
+        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
       >
-        <motion.div
-          className={`${scanline} left-0 top-0`}
-          initial={{ x: "-50vw", y: "120vh", rotate: -45 }}
-          animate={{ x: "30vw", y: "-30vh", rotate: -45 }}
-          transition={{ duration: 6, ease: "linear", repeat: Infinity }}
-        >
-          <div className="absolute top-full left-0 right-0 h-[400px] bg-gradient-to-b from-cyan-400/40 to-transparent" />
-        </motion.div>
-        <motion.div
-          className={`${scanline} right-0 top-0`}
-          initial={{ x: "50vw", y: "120vh", rotate: 45 }}
-          animate={{ x: "-30vw", y: "-30vh", rotate: 45 }}
-          transition={{ duration: 6, ease: "linear", repeat: Infinity, delay: 1.5 }}
-        >
-          <div className="absolute top-full left-0 right-0 h-[400px] bg-gradient-to-b from-cyan-400/40 to-transparent" />
-        </motion.div>
-      </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-cyan-400/[0.04]" />
+        <div className="absolute bottom-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-300/40 to-transparent" />
+      </motion.div>
 
       {/* Cursor spotlight */}
       <div ref={spotRef} className="absolute inset-0 pointer-events-none" />
 
       {/* Vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.65)_100%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.6)_100%)] pointer-events-none" />
     </div>
   );
 }

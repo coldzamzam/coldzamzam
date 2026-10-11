@@ -6,8 +6,8 @@ import SectionShell from "@/components/layout/SectionShell";
 
 export default function AboutSection() {
   return (
-    <SectionShell id="about" index="04" title="About" subtitle="Resonator profile" className="w-screen">
-      <div className="grid grid-cols-[280px_1fr] gap-12 max-w-4xl items-center">
+    <SectionShell id="about" index="04" title="About" subtitle="Who I am">
+      <div className="grid md:grid-cols-[280px_1fr] gap-12 max-w-4xl items-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -17,7 +17,7 @@ export default function AboutSection() {
         >
           {/* Placeholder portrait: replace with <Image src="/me.jpg" /> */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(34,211,238,0.25),transparent_60%)]" />
-          <span className="absolute top-1/3 font-solaris text-8xl text-cyan-200/80 text-glow flicker">AZ</span>
+          <span className="absolute top-1/3 font-lagu font-bold text-8xl text-gradient flicker">AZ</span>
           <div className="relative w-full p-3 font-mono text-[10px] uppercase tracking-widest text-cyan-100/70 border-t border-cyan-300/20 bg-black/30">
             ID // AQSA_ZAMZAMI
           </div>

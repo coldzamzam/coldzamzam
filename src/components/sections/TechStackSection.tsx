@@ -10,7 +10,7 @@ export default function TechStackSection() {
   const group = TECH_STACK.find((g) => g.group === active) ?? TECH_STACK[0];
 
   return (
-    <SectionShell id="tech-stack" index="03" title="Tech Stack" subtitle="Tools of the trade" className="w-screen">
+    <SectionShell id="tech-stack" index="03" title="Tech Stack" subtitle="Tools of the trade">
       <div className="max-w-3xl">
         <div className="flex gap-2 mb-8" role="tablist">
           {TECH_STACK.map((g) => (
@@ -37,7 +37,7 @@ export default function TechStackSection() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-5 gap-4"
+            className="grid grid-cols-3 sm:grid-cols-5 gap-4"
           >
             {group.items.map((item, i) => (
               <motion.div

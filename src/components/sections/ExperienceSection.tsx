@@ -6,7 +6,7 @@ import SectionShell from "@/components/layout/SectionShell";
 
 export default function ExperienceSection() {
   return (
-    <SectionShell id="experience" index="02" title="Experience" subtitle="Career timeline" className="w-[110vw]">
+    <SectionShell id="experience" index="02" title="Experience" subtitle="Career timeline">
       <div className="relative max-w-3xl">
         <div className="absolute left-[7px] top-2 bottom-2 w-[1px] bg-gradient-to-b from-cyan-400 via-cyan-400/30 to-transparent" />
         <div className="flex flex-col gap-6">

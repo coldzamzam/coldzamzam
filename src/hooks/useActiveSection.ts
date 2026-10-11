@@ -16,7 +16,7 @@ export function useActiveSection(sectionIds: string[]) {
 
     const observer = new IntersectionObserver(callback, {
       root: null,
-      rootMargin: "0px -40% 0px -40%", // triggers when section is in the middle 20% of viewport horizontally
+      rootMargin: "-45% 0px -45% 0px", // triggers when section crosses the middle 10% of the viewport
       threshold: 0,
     });
 

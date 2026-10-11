@@ -18,15 +18,15 @@ const ICONS: Record<string, ReactNode> = {
 
 export default function ContactSection() {
   return (
-    <SectionShell id="contact" index="05" title="Contact" subtitle="Open a channel" className="w-screen">
+    <SectionShell id="contact" index="05" title="Contact" subtitle="Get in touch">
       <div className="max-w-2xl">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="font-solaris text-5xl md:text-6xl text-white text-glow leading-tight"
+          className="font-lagu font-bold text-4xl md:text-5xl text-white leading-tight"
         >
-          Let&apos;s build something together.
+          Let&apos;s build something <span className="text-gradient">together.</span>
         </motion.p>
         <div className="mt-10 flex gap-5">
           {CONTACTS.map((c, i) => {
