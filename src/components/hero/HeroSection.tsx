@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { ArrowRight, Download } from "lucide-react";
 import ScrambleText from "../shared/ScrambleText";
-import { ME, TECH_STACK } from "@/data/portfolio";
+import GithubContributionCard from "./GithubContributionCard";
+import { ME } from "@/data/portfolio";
 
 const scrollToId = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
@@ -34,82 +35,6 @@ function TypedRoles({ roles }: { roles: string[] }) {
       {roles[index].slice(0, length)}
       <span className="caret" />
     </span>
-  );
-}
-
-/** Orbiting rings with floating tech chips; tilts towards the mouse. */
-function HeroVisual() {
-  const ref = useRef<HTMLDivElement>(null);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [14, -14]), { stiffness: 120, damping: 15 });
-  const rotateY = useSpring(useTransform(mx, [-0.5, 0.5], [-14, 14]), { stiffness: 120, damping: 15 });
-
-  const chips = TECH_STACK.flatMap((g) => g.items).slice(0, 4);
-  const chipPos = ["top-[6%] left-[4%]", "top-[18%] right-[0%]", "bottom-[16%] left-[0%]", "bottom-[6%] right-[8%]"];
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1, delay: 0.4 }}
-      onMouseMove={(e) => {
-        const r = ref.current?.getBoundingClientRect();
-        if (!r) return;
-        mx.set((e.clientX - r.left) / r.width - 0.5);
-        my.set((e.clientY - r.top) / r.height - 0.5);
-      }}
-      onMouseLeave={() => {
-        mx.set(0);
-        my.set(0);
-      }}
-      className="hidden lg:block relative w-full max-w-[440px] aspect-square mx-auto [perspective:1000px]"
-    >
-      <motion.div style={{ rotateX, rotateY, transformStyle: "preserve-3d" }} className="relative w-full h-full">
-        <motion.div
-          className="absolute inset-0 rounded-full border border-dashed border-zinc-800"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div
-          className="absolute inset-[12%] rounded-full border border-zinc-700/60"
-          animate={{ rotate: -360 }}
-          transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
-        >
-          <span className="absolute -top-1 left-1/2 w-2 h-2 rounded-full bg-zinc-400 shadow-[0_0_8px_rgba(255,255,255,0.4)]" />
-        </motion.div>
-        <motion.div
-          className="absolute inset-[26%] rounded-full border border-amber-500/30"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
-        >
-          <span className="absolute top-1/2 -right-1 w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.8)]" />
-        </motion.div>
-
-        {/* Core */}
-        <div className="absolute inset-[36%] rounded-full bg-[radial-gradient(circle,rgba(245,158,11,0.18),transparent_70%)] flex items-center justify-center [transform:translateZ(40px)]">
-          <motion.span
-            className="font-lagu font-bold text-4xl text-zinc-100"
-            animate={{ opacity: [0.8, 1, 0.8] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          >
-            {ME.name.split(" ").map((w) => w[0]).join("")}
-          </motion.span>
-        </div>
-
-        {chips.map((chip, i) => (
-          <motion.span
-            key={chip}
-            className={`absolute ${chipPos[i]} px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-zinc-300 bg-[#12141a]/90 border border-white/10 backdrop-blur [transform:translateZ(70px)]`}
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: 3 + i * 0.6, repeat: Infinity, ease: "easeInOut" }}
-          >
-            {chip}
-          </motion.span>
-        ))}
-      </motion.div>
-    </motion.div>
   );
 }
 
@@ -178,7 +103,7 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        <HeroVisual />
+        <GithubContributionCard />
       </div>
 
       {/* Scroll indicator */}
