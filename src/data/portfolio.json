@@ -1,0 +1,201 @@
+{
+  "me": {
+    "name": "Aqsa Zamzami",
+    "roles": ["Fullstack Developer", "Software Engineer"],
+    "tagline": "I build clean, fast, and thoughtful web & mobile experiences, from pixel-level UI to resilient backends.",
+    "bio": [
+      "I'm a software engineer who enjoys turning complicated problems into simple, well-crafted products. My work spans the whole stack: interfaces, APIs, databases, and the glue between them.",
+      "Outside of code I explore game UI design, which heavily inspires how this portfolio looks and feels."
+    ],
+    "location": "Indonesia",
+    "avatar": "/assets/pasfoto-aqsa.png",
+    "resumeUrl": "#",
+    "stats": [
+      { "label": "Years Exp.", "value": "3+" },
+      { "label": "Projects", "value": "6" },
+      { "label": "Technologies", "value": "18" }
+    ]
+  },
+  "projects": [
+    {
+      "id": "p1",
+      "slug": "prime",
+      "title": "PRIME",
+      "date": "2024.11",
+      "type": "Fullstack Microservices & ML",
+      "status": "Completed",
+      "desc": "Industrial predictive maintenance monorepo platform featuring real-time telemetry processing, automated machine failure forecasting, and semantic document retrieval.",
+      "contribution": "Architected microservices monorepo orchestration, integrated Python ML pipeline with Qdrant vector search, and configured TimescaleDB & Redis caching.",
+      "tech": ["Next.js", "Express", "Python", "Qdrant", "TimescaleDB", "Redis", "Docker", "Tailwind CSS"],
+      "coverImage": "/projects/prime.png",
+      "gallery": [
+        "/assets/prime/Screenshot 2026-10-12 173524.png",
+        "/assets/prime/Screenshot 2026-10-12 171632.png",
+        "/assets/prime/Screenshot 2026-10-12 173547.png",
+        "/assets/prime/Screenshot 2026-10-12 173557.png",
+        "/assets/prime/Screenshot 2026-10-12 175618.png"
+      ],
+      "github": "https://github.com/coldzamzam",
+      "demo": ""
+    },
+    {
+      "id": "p2",
+      "slug": "ardana",
+      "title": "Ardana",
+      "date": "2025.01",
+      "type": "Fullstack Web Application",
+      "status": "Completed",
+      "desc": "Cooperative savings, loans, and financial administration system built with modern reactive server-driven architecture and real-time ledger accounting.",
+      "contribution": "Developed fullstack modules using Laravel 12 and Inertia.js React 19, implemented financial transaction integrity, and styled UI with Tailwind CSS v4.",
+      "tech": ["Laravel 12", "Inertia.js", "React 19", "Vite 7", "PostgreSQL", "Tailwind CSS"],
+      "coverImage": "/projects/ardana.png",
+      "gallery": [
+        "/assets/ardana/Screenshot 2026-10-12 180901.png",
+        "/assets/ardana/Screenshot 2026-10-12 181208.png",
+        "/assets/ardana/Screenshot 2026-10-12 181214.png",
+        "/assets/ardana/Screenshot 2026-10-12 181524.png",
+        "/assets/ardana/Screenshot 2026-10-12 182007.png"
+      ],
+      "github": "https://github.com/coldzamzam",
+      "demo": ""
+    },
+    {
+      "id": "p3",
+      "slug": "sharethem",
+      "title": "ShareThem",
+      "date": "2024.06",
+      "type": "Cross-Platform Mobile",
+      "status": "Completed",
+      "desc": "High-speed offline peer-to-peer file transfer mobile app utilizing local area network device discovery and direct socket data streaming.",
+      "contribution": "Engineered zero-configuration mDNS service discovery via Bonsoir, optimized chunked TCP/UDP socket streaming, and built reactive Flutter UI.",
+      "tech": ["Flutter", "Dart", "Bonsoir (mDNS)", "Socket TCP/UDP", "Android"],
+      "coverImage": "/projects/sharethem.png",
+      "gallery": [
+        "/assets/sharethem/Screenshot 2026-10-12 234040.png",
+        "/assets/sharethem/Screenshot 2026-10-12 234052.png",
+        "/assets/sharethem/Screenshot 2026-10-12 234206.png",
+        "/assets/sharethem/Screenshot 2026-10-12 234219.png"
+      ],
+      "github": "https://github.com/coldzamzam",
+      "demo": ""
+    },
+    {
+      "id": "p4",
+      "slug": "expasign",
+      "title": "Expasign",
+      "date": "2024.08",
+      "type": "Event Management & Fintech",
+      "status": "Completed",
+      "desc": "Comprehensive competition & exhibition registration portal featuring automated payment verification via Saweria Webhook and ticket generation.",
+      "contribution": "Implemented backend API, designed automated payment verification webhook pipeline, and managed event participant data workflows.",
+      "tech": ["PHP", "React", "Saweria Webhook API", "MySQL", "Tailwind CSS"],
+      "coverImage": "/projects/expasign.png",
+      "gallery": [
+        "/assets/expasign/1.png",
+        "/assets/expasign/2.png",
+        "/assets/expasign/3.png",
+        "/assets/expasign/4.png",
+        "/assets/expasign/5.png",
+        "/assets/expasign/6.png"
+      ],
+      "github": "https://github.com/coldzamzam",
+      "demo": ""
+    },
+    {
+      "id": "p5",
+      "slug": "invensync",
+      "title": "InvenSync",
+      "date": "2023.11",
+      "type": "Enterprise POS & Database",
+      "status": "Completed",
+      "desc": "Retail point-of-sale cashier and inventory management system backed by Oracle Database 21c with enterprise-grade relational constraints.",
+      "contribution": "Designed relational schema, PL/SQL functions, sequences, and triggers in Oracle 21c, and built PHP MVC cashier transaction workflows.",
+      "tech": ["PHP MVC", "Oracle Database 21c", "PL/SQL", "Tailwind CSS", "JavaScript"],
+      "coverImage": "/projects/invensync.png",
+      "gallery": [
+        "/assets/invensync/dashboard.png",
+        "/assets/invensync/cashier.png",
+        "/assets/invensync/inventory.png",
+        "/assets/invensync/transactions.png",
+        "/assets/invensync/report.png"
+      ],
+      "github": "https://github.com/coldzamzam",
+      "demo": ""
+    },
+    {
+      "id": "p6",
+      "slug": "pickynet",
+      "title": "PickyNet",
+      "date": "2024.04",
+      "type": "Decision Support System (SPK)",
+      "status": "Completed",
+      "desc": "Decision Support System for Internet Service Provider (ISP) selection implementing the WASPAS (Weight Aggregated Sum Product Assessment) multi-criteria algorithm.",
+      "contribution": "Implemented mathematical normalization, WSM & WPM ranking calculation engine, ISP parameter management, and interactive comparison UI.",
+      "tech": ["Laravel 12", "WASPAS Algorithm", "Alpine.js", "Tailwind CSS", "MySQL / SQLite"],
+      "coverImage": "/projects/pickynet.png",
+      "gallery": [
+        "/assets/pickynet/home.png",
+        "/assets/pickynet/pick_waspas.png",
+        "/assets/pickynet/provider.png",
+        "/assets/pickynet/team.png",
+        "/assets/pickynet/welcome.png"
+      ],
+      "github": "https://github.com/coldzamzam",
+      "demo": ""
+    }
+  ],
+  "experience": [
+    {
+      "id": "e1",
+      "role": "Fullstack Software Engineer",
+      "company": "Freelance & Independent Projects",
+      "period": "2024 — Present",
+      "badges": ["Fullstack", "Microservices", "System Architecture"],
+      "points": [
+        "Architected scalable web and mobile solutions including PRIME (predictive maintenance monorepo) and Ardana (cooperative finance platform).",
+        "Implemented reactive fullstack architectures integrating containerized services, vector databases, and real-time socket communication."
+      ]
+    },
+    {
+      "id": "e2",
+      "role": "Backend & Database Developer",
+      "company": "Academic & Client Projects",
+      "period": "2023 — 2024",
+      "badges": ["Oracle DB", "PL/SQL", "PHP MVC"],
+      "points": [
+        "Engineered enterprise inventory and point-of-sale systems (InvenSync) utilizing Oracle Database 21c PL/SQL triggers and sequences.",
+        "Built automated webhook payment handling and event management platforms for regional competition registrations (Expasign)."
+      ]
+    },
+    {
+      "id": "e3",
+      "role": "Mobile & Algorithmic Developer",
+      "company": "Research & Exploration",
+      "period": "2023 — 2024",
+      "badges": ["Flutter", "P2P", "SPK Algorithms"],
+      "points": [
+        "Implemented WASPAS multi-criteria decision support systems for ISP selection with normalized mathematical modeling.",
+        "Developed offline high-speed P2P file sharing solutions using Flutter and mDNS local network service discovery (ShareThem)."
+      ]
+    }
+  ],
+  "techStack": [
+    {
+      "group": "Languages",
+      "items": ["TypeScript", "JavaScript", "PHP", "Dart", "Python", "SQL (PL/SQL)"]
+    },
+    {
+      "group": "Frameworks & Libs",
+      "items": ["Next.js", "React", "Laravel", "Flutter", "Express", "Inertia.js", "Tailwind CSS"]
+    },
+    {
+      "group": "Databases & Tools",
+      "items": ["PostgreSQL", "Oracle Database 21c", "MySQL", "Redis", "Qdrant", "Docker", "Git"]
+    }
+  ],
+  "contacts": [
+    { "id": "github", "label": "GitHub", "href": "https://github.com/coldzamzam" },
+    { "id": "email", "label": "Email", "href": "mailto:placeholder@zamzami.dev" },
+    { "id": "linkedin", "label": "LinkedIn", "href": "https://linkedin.com/in/placeholder" }
+  ]
+}
