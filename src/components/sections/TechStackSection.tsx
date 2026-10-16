@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { TECH_STACK } from "@/data/portfolio";
 import SectionShell from "@/components/layout/SectionShell";
 
+import TechIcon from "@/components/shared/TechIcon";
+
 export default function TechStackSection() {
   const [active, setActive] = useState(TECH_STACK[0].group);
   const group = TECH_STACK.find((g) => g.group === active) ?? TECH_STACK[0];
@@ -44,14 +46,14 @@ export default function TechStackSection() {
                 key={item}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.05 }}
+                transition={{ delay: i * 0.04 }}
                 whileHover={{ y: -6 }}
-                className="hud-panel aspect-square flex flex-col items-center justify-center gap-3 p-3 hover:shadow-[0_8px_24px_rgba(245,158,11,0.12)]"
+                className="hud-panel group aspect-square flex flex-col items-center justify-center gap-3 p-3 hover:border-amber-400/50 hover:shadow-[0_8px_24px_rgba(245,158,11,0.12)] transition-all"
               >
-                <span className="w-10 h-10 flex items-center justify-center rounded-sm border border-amber-400/30 bg-amber-400/10 font-lagu text-lg text-amber-300">
-                  {item.charAt(0)}
-                </span>
-                <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-200 text-center">{item}</span>
+                <div className="w-14 h-14 flex items-center justify-center rounded-lg border border-white/10 bg-zinc-900/80 shadow-inner group-hover:border-amber-400/40 group-hover:bg-zinc-800/90 group-hover:shadow-[0_0_16px_rgba(245,158,11,0.15)] transition-all duration-300">
+                  <TechIcon name={item} className="w-8 h-8 group-hover:scale-110 transition-transform duration-300" />
+                </div>
+                <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-300 group-hover:text-white transition-colors text-center">{item}</span>
               </motion.div>
             ))}
           </motion.div>

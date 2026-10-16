@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { PROJECTS, type Project } from "@/data/portfolio";
 import Link from "next/link";
+import TechIcon from "@/components/shared/TechIcon";
 
 const GithubIcon = ({ size = 14 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -342,9 +343,10 @@ export default function ProjectsSection() {
                           {activeProject.tech.map((t) => (
                             <span
                               key={t}
-                              className="font-mono text-[10px] uppercase px-2.5 py-1 bg-white/[0.04] text-zinc-200 border border-white/10 rounded-xs"
+                              className="font-mono text-[10px] uppercase px-2.5 py-1 bg-white/[0.04] text-zinc-200 border border-white/10 rounded-xs flex items-center gap-1.5"
                             >
-                              {t}
+                              <TechIcon name={t} className="w-3 h-3 text-amber-400" />
+                              <span>{t}</span>
                             </span>
                           ))}
                         </div>
@@ -371,7 +373,7 @@ export default function ProjectsSection() {
                     </div>
 
                     <div className="text-center font-mono text-xs text-zinc-500 pt-2">
-                      Scroll down to zoom out &amp; travel to Project 0{((projectIdx + 1) % PROJECTS.length) + 1} &darr;
+                      Scroll down to proceed to Project 0{((projectIdx + 1) % PROJECTS.length) + 1} &darr;
                     </div>
                   </motion.div>
                 )}
@@ -381,7 +383,7 @@ export default function ProjectsSection() {
             {/* Container Bottom Milestone Scrubber */}
             <div className="px-6 py-3 border-t border-white/[0.08] bg-black/40 backdrop-blur-sm flex items-center justify-between text-xs font-mono text-zinc-400">
               <div className="flex items-center gap-3">
-                <span className="text-zinc-500 uppercase tracking-wider text-[11px]">Scrollytelling Progress:</span>
+                <span className="text-zinc-500 uppercase tracking-wider text-[11px]">Progress:</span>
                 <div className="w-24 sm:w-36 h-1.5 bg-white/10 rounded-full overflow-hidden">
                   <div 
                     className="h-full bg-amber-400 transition-all duration-75 rounded-full"
@@ -392,14 +394,14 @@ export default function ProjectsSection() {
               </div>
 
               <div className="hidden md:flex items-center gap-2 text-zinc-500 text-[11px]">
-                <span>Scroll wheel or trackpad down to navigate continuously</span>
+                <span>Scroll down to navigate through projects</span>
               </div>
 
               <button
                 onClick={() => jumpToProject((projectIdx + 1) % PROJECTS.length)}
                 className="text-amber-400 hover:text-amber-300 flex items-center gap-1 text-[11px] uppercase tracking-wider transition-colors"
               >
-                <span>Jump to Next</span>
+                <span>Next Project</span>
                 <ArrowRight size={12} />
               </button>
             </div>
@@ -412,11 +414,11 @@ export default function ProjectsSection() {
         <footer className="relative z-30 w-full px-6 py-3 border-t border-white/[0.08] bg-[#07080a]/80 backdrop-blur-md flex items-center justify-between text-xs font-mono text-zinc-500">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span>CONTINUOUS SCROLL ACTIVE // GTA VI SCROLLYTELLING ENGINE</span>
+            <span>PROJECT TIMELINE // NATIVE SCROLL</span>
           </div>
 
           <div>
-            Next: Experience Timeline &darr;
+            Next: Experience &darr;
           </div>
         </footer>
       </div>

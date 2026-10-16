@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, Calendar, CheckCircle, Clock, BookOpen, Cpu, Sparkles } from "lucide-react";
 import { PROJECTS, type Project } from "@/data/portfolio";
+import TechIcon from "@/components/shared/TechIcon";
 
 const GithubIcon = ({ size = 15 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -194,9 +195,10 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
                 {project.tech.map((t) => (
                   <span
                     key={t}
-                    className="font-mono text-xs uppercase px-3 py-1.5 bg-white/[0.04] text-zinc-200 border border-white/10 rounded-sm"
+                    className="font-mono text-xs uppercase px-3 py-1.5 bg-white/[0.04] text-zinc-200 border border-white/10 rounded-sm flex items-center gap-2"
                   >
-                    {t}
+                    <TechIcon name={t} className="w-3.5 h-3.5 text-amber-400" />
+                    <span>{t}</span>
                   </span>
                 ))}
               </div>
