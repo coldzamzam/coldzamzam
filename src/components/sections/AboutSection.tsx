@@ -13,13 +13,24 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="hud-panel aspect-[3/4] flex items-end justify-center relative overflow-hidden"
+          className="hud-panel aspect-[3/4] flex flex-col justify-end relative overflow-hidden group"
         >
-          {/* Placeholder portrait: replace with <Image src="/me.jpg" /> */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(245,158,11,0.12),transparent_60%)]" />
-          <span className="absolute top-1/3 font-lagu font-bold text-8xl text-zinc-100/90 flicker">AZ</span>
-          <div className="relative w-full p-3 font-mono text-[10px] uppercase tracking-widest text-zinc-400 border-t border-white/10 bg-black/40">
-            ID // AQSA_ZAMZAMI
+          {ME.avatar ? (
+            <img
+              src={ME.avatar}
+              alt={ME.name}
+              className="absolute inset-0 w-full h-full object-cover object-center filter grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700"
+            />
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(245,158,11,0.12),transparent_60%)]" />
+              <span className="absolute top-1/3 left-1/2 -translate-x-1/2 font-lagu font-bold text-8xl text-zinc-100/90 flicker">AZ</span>
+            </>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent pointer-events-none" />
+          <div className="relative z-10 w-full p-3 font-mono text-[10px] uppercase tracking-widest text-zinc-300 border-t border-white/10 bg-black/60 backdrop-blur-xs flex items-center justify-between">
+            <span>ID // {ME.name.replace(/ /g, "_").toUpperCase()}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           </div>
         </motion.div>
 

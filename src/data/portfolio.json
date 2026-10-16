@@ -29,11 +29,12 @@
       "tech": ["Next.js", "Express", "Python", "Qdrant", "TimescaleDB", "Redis", "Docker", "Tailwind CSS"],
       "coverImage": "/projects/prime.png",
       "gallery": [
-        "/assets/prime/Screenshot 2026-10-12 173524.png",
-        "/assets/prime/Screenshot 2026-10-12 171632.png",
-        "/assets/prime/Screenshot 2026-10-12 173547.png",
-        "/assets/prime/Screenshot 2026-10-12 173557.png",
-        "/assets/prime/Screenshot 2026-10-12 175618.png"
+        "/assets/prime/01-dashboard.png",
+        "/assets/prime/02-landing.png",
+        "/assets/prime/03-telemetry.png",
+        "/assets/prime/04-predictions.png",
+        "/assets/prime/05-equipment.png",
+        "/assets/prime/06-docker-services.png"
       ],
       "github": "https://github.com/coldzamzam",
       "demo": ""
@@ -50,11 +51,11 @@
       "tech": ["Laravel 12", "Inertia.js", "React 19", "Vite 7", "PostgreSQL", "Tailwind CSS"],
       "coverImage": "/projects/ardana.png",
       "gallery": [
-        "/assets/ardana/Screenshot 2026-10-12 180901.png",
-        "/assets/ardana/Screenshot 2026-10-12 181208.png",
-        "/assets/ardana/Screenshot 2026-10-12 181214.png",
-        "/assets/ardana/Screenshot 2026-10-12 181524.png",
-        "/assets/ardana/Screenshot 2026-10-12 182007.png"
+        "/assets/ardana/01-dashboard.png",
+        "/assets/ardana/02-loans.png",
+        "/assets/ardana/03-savings.png",
+        "/assets/ardana/04-transactions.png",
+        "/assets/ardana/05-reports.png"
       ],
       "github": "https://github.com/coldzamzam",
       "demo": ""
@@ -71,10 +72,11 @@
       "tech": ["Flutter", "Dart", "Bonsoir (mDNS)", "Socket TCP/UDP", "Android"],
       "coverImage": "/projects/sharethem.png",
       "gallery": [
-        "/assets/sharethem/Screenshot 2026-10-12 234040.png",
-        "/assets/sharethem/Screenshot 2026-10-12 234052.png",
-        "/assets/sharethem/Screenshot 2026-10-12 234206.png",
-        "/assets/sharethem/Screenshot 2026-10-12 234219.png"
+        "/assets/sharethem/01-transfer-modal.png",
+        "/assets/sharethem/02-device-discovery.png",
+        "/assets/sharethem/03-file-selection.png",
+        "/assets/sharethem/04-active-transfer.png",
+        "/assets/sharethem/05-settings.png"
       ],
       "github": "https://github.com/coldzamzam",
       "demo": ""

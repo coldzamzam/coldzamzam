@@ -51,7 +51,7 @@ export default function ProjectsSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-5%" }}
                 transition={{ duration: 0.6, delay: (i % 3) * 0.1 }}
-                className="relative w-[320px] h-[56vh] flex-shrink-0 flex items-center"
+                className="relative w-[350px] md:w-[380px] h-[64vh] flex-shrink-0 flex items-center"
               >
                 {/* Node on the path */}
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 z-20">
@@ -70,14 +70,31 @@ export default function ProjectsSection() {
                     onClick={() => setOpenId(open ? null : proj.id)}
                     aria-expanded={open}
                     id={`project-${proj.id}`}
-                    className={`hud-panel w-full text-left p-5 ${open ? "!border-amber-400/60 shadow-[0_8px_32px_rgba(245,158,11,0.12)]" : ""}`}
+                    className={`hud-panel group w-full text-left p-4 md:p-5 transition-all duration-300 ${open ? "!border-amber-400/60 shadow-[0_8px_32px_rgba(245,158,11,0.14)]" : "hover:border-zinc-600"}`}
                   >
-                    <div className="flex justify-between items-start mb-3">
+                    {/* Project Screenshot Cover */}
+                    {proj.coverImage && (
+                      <div className="relative w-full aspect-[16/9] mb-3.5 overflow-hidden rounded-xs border border-white/10 bg-black/60">
+                        <img
+                          src={proj.coverImage}
+                          alt={proj.title}
+                          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0b0e]/85 via-transparent to-transparent pointer-events-none" />
+                        <div className="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 bg-black/80 backdrop-blur-xs border border-white/10 text-[9px] font-mono tracking-widest text-zinc-300">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                          ARCHIVE_{proj.id.toUpperCase()}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex justify-between items-start mb-2">
                       <span className="text-[10px] font-mono text-amber-400 tracking-widest">{proj.date}</span>
                       <span className="text-[10px] font-mono text-zinc-400 uppercase px-2 py-0.5 border border-white/10 bg-white/[0.02]">{proj.type}</span>
                     </div>
-                    <h3 className="text-xl font-lagu text-white mb-2">{proj.title}</h3>
-                    <p className={`text-sm text-zinc-400 leading-relaxed ${open ? "" : "line-clamp-2"}`}>{proj.desc}</p>
+                    <h3 className="text-xl font-lagu text-white mb-2 group-hover:text-amber-300 transition-colors">{proj.title}</h3>
+                    <p className={`text-xs md:text-sm text-zinc-400 leading-relaxed ${open ? "" : "line-clamp-2"}`}>{proj.desc}</p>
 
                     <AnimatePresence initial={false}>
                       {open && (
@@ -88,20 +105,43 @@ export default function ProjectsSection() {
                           transition={{ duration: 0.35 }}
                           className="overflow-hidden"
                         >
-                          <p className="mt-4 text-xs text-zinc-300 leading-relaxed border-l-2 border-amber-400/80 pl-3">{proj.contribution}</p>
-                          <div className="mt-4 flex flex-wrap gap-2">
+                          <p className="mt-3 text-xs text-zinc-300 leading-relaxed border-l-2 border-amber-400/80 pl-3 bg-amber-400/[0.03] py-1">{proj.contribution}</p>
+                          
+                          {/* Mini Gallery Strip */}
+                          {proj.gallery && proj.gallery.length > 1 && (
+                            <div className="mt-3.5 pt-3 border-t border-white/10">
+                              <div className="flex justify-between items-center text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-2">
+                                <span>Snapshots</span>
+                                <span className="text-amber-400">{proj.gallery.length} screens</span>
+                              </div>
+                              <div className="grid grid-cols-3 gap-1.5">
+                                {proj.gallery.slice(0, 3).map((img, idx) => (
+                                  <div key={idx} className="relative aspect-[16/10] overflow-hidden border border-white/10 bg-black/40 rounded-xs">
+                                    <img
+                                      src={img}
+                                      alt={`${proj.title} snapshot ${idx + 1}`}
+                                      className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-300"
+                                      loading="lazy"
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          <div className="mt-3.5 flex flex-wrap gap-1.5">
                             {proj.tech.map((t) => (
-                              <span key={t} className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 bg-white/[0.03] text-zinc-300 border border-white/10">{t}</span>
+                              <span key={t} className="text-[9px] font-mono uppercase tracking-wider px-2 py-0.5 bg-white/[0.03] text-zinc-300 border border-white/10">{t}</span>
                             ))}
                           </div>
-                          <div className="mt-4 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest">
+                          <div className="mt-4 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest pt-2 border-t border-white/5">
                             <span className={proj.status === "Ongoing" ? "text-amber-400" : "text-emerald-400"}>● {proj.status}</span>
                             <a
                               href={`/projects/${proj.slug}`}
                               onClick={(e) => e.stopPropagation()}
-                              className="flex items-center gap-1 text-amber-400 hover:text-amber-300 transition-colors"
+                              className="flex items-center gap-1.5 px-3 py-1 bg-amber-400/10 hover:bg-amber-400/20 text-amber-400 border border-amber-400/30 rounded-xs transition-colors"
                             >
-                              Full detail <ExternalLink size={12} />
+                              Open Gallery & Detail <ExternalLink size={11} />
                             </a>
                           </div>
                         </motion.div>
@@ -109,9 +149,9 @@ export default function ProjectsSection() {
                     </AnimatePresence>
 
                     {!open && (
-                      <div className="mt-4 flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-slate-500">
-                        <span>View details</span>
-                        <ChevronRight size={14} />
+                      <div className="mt-3 flex items-center justify-between text-xs font-mono uppercase tracking-widest text-zinc-500 group-hover:text-amber-400 transition-colors pt-2 border-t border-white/5">
+                        <span>Inspect Archive</span>
+                        <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                       </div>
                     )}
                   </button>
