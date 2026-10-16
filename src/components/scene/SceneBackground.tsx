@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import ResonanceShaderBackground from "./ResonanceShaderBackground";
 
 export default function SceneBackground() {
   const spotRef = useRef<HTMLDivElement>(null);
@@ -22,9 +21,6 @@ export default function SceneBackground() {
     <div className="fixed inset-0 z-[-1] bg-[#0a0b0e] overflow-hidden">
       {/* Deep base gradient */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,#151820_0%,#0a0b0e_60%,#050607_100%)]" />
-
-      {/* Resonance Frequency WebGL Wavefield */}
-      <ResonanceShaderBackground />
 
       {/* Subtle warm ambient glow */}
       <motion.div
