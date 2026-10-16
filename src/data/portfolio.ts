@@ -9,6 +9,8 @@ export interface Project {
   status: "Completed" | "Ongoing";
   desc: string;
   contribution: string;
+  context?: string;
+  highlight?: string;
   tech: string[];
   coverImage?: string;
   gallery?: string[];

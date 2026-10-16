@@ -56,8 +56,8 @@ export default function HeroSection() {
             Available for work
           </motion.div>
 
-          <motion.p {...fadeUp(0.2)} className="mt-8 font-mono text-sm text-amber-400/90">
-            {"// hello, I'm"}
+          <motion.p {...fadeUp(0.2)} className="mt-8 font-mono text-xs uppercase tracking-widest text-amber-400/90">
+            Engineering &amp; System Architecture
           </motion.p>
 
           <motion.h1 {...fadeUp(0.25)} className="mt-2 font-lagu font-bold uppercase leading-[0.95] tracking-tight text-5xl sm:text-6xl md:text-7xl xl:text-8xl text-white">

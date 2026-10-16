@@ -19,8 +19,8 @@ export default function ProjectsSection() {
         style={{ paddingLeft: "max(1.5rem, calc((100vw - 72rem) / 2 + 3rem))" }}
       >
         <SectionHeading index="01" title="Projects" subtitle="Selected work" />
-        <p className="text-slate-400 leading-relaxed max-w-sm">
-          A collection of things I&apos;ve built. Keep scrolling to move through the timeline, and click a card to expand it.
+        <p className="text-zinc-400 leading-relaxed max-w-sm text-sm">
+          A selection of software platforms, protocols, and database systems I&apos;ve engineered. Scroll horizontally to explore each case study.
         </p>
         <div className="mt-8 flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest text-amber-400">
           <span>{String(PROJECTS.length).padStart(2, "0")} projects</span>
@@ -82,9 +82,9 @@ export default function ProjectsSection() {
                           loading="lazy"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0b0e]/85 via-transparent to-transparent pointer-events-none" />
-                        <div className="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 bg-black/80 backdrop-blur-xs border border-white/10 text-[9px] font-mono tracking-widest text-zinc-300">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                          ARCHIVE_{proj.id.toUpperCase()}
+                        <div className="absolute top-2 left-2 flex items-center gap-1.5 px-2.5 py-1 bg-black/85 backdrop-blur-xs border border-white/10 text-[9px] font-mono tracking-wider text-zinc-200 rounded-xs">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                          {proj.highlight ? proj.highlight.split(" with ")[0].split(" via ")[0] : proj.type}
                         </div>
                       </div>
                     )}

@@ -1,19 +1,19 @@
 {
   "me": {
     "name": "Aqsa Zamzami",
-    "roles": ["Fullstack Developer", "Software Engineer"],
-    "tagline": "I build clean, fast, and thoughtful web & mobile experiences, from pixel-level UI to resilient backends.",
+    "roles": ["Fullstack Engineer", "System & UI Explorer"],
+    "tagline": "Bridging reliable backend systems with tactile, game-inspired user interfaces.",
     "bio": [
-      "I'm a software engineer who enjoys turning complicated problems into simple, well-crafted products. My work spans the whole stack: interfaces, APIs, databases, and the glue between them.",
-      "Outside of code I explore game UI design, which heavily inspires how this portfolio looks and feels."
+      "I'm a software developer based in Indonesia with a strong curiosity for how systems behave from the ground up—from low-level socket streaming and database internals to fine-grained 60fps UI interactions.",
+      "Rather than building generic web apps, I draw heavy aesthetic and structural inspiration from tactical game interfaces like Wuthering Waves. I believe software should not only be resilient under the hood, but also feel deliberate and satisfying to use."
     ],
     "location": "Indonesia",
     "avatar": "/assets/pasfoto-aqsa.png",
     "resumeUrl": "#",
     "stats": [
-      { "label": "Years Exp.", "value": "3+" },
-      { "label": "Projects", "value": "6" },
-      { "label": "Technologies", "value": "18" }
+      { "label": "Featured Projects", "value": "06" },
+      { "label": "Core Frameworks", "value": "08" },
+      { "label": "Engineering Focus", "value": "Fullstack" }
     ]
   },
   "projects": [
@@ -22,10 +22,12 @@
       "slug": "prime",
       "title": "PRIME",
       "date": "2024.11",
-      "type": "Fullstack Microservices & ML",
+      "type": "Predictive Maintenance Monorepo",
       "status": "Completed",
-      "desc": "Industrial predictive maintenance monorepo platform featuring real-time telemetry processing, automated machine failure forecasting, and semantic document retrieval.",
-      "contribution": "Architected microservices monorepo orchestration, integrated Python ML pipeline with Qdrant vector search, and configured TimescaleDB & Redis caching.",
+      "desc": "An industrial predictive maintenance monorepo designed to process real-time machine telemetry, forecast failure risks before breakdowns happen, and provide semantic search across technical documentation.",
+      "context": "Built as an intensive exploration into distributed architectures. The biggest challenge was orchestrating five separate services—balancing high-throughput sensor ingestion in Express with asynchronous Python ML inference, while keeping vector retrieval in Qdrant fast using Redis caching.",
+      "contribution": "Architected the microservices monorepo setup, configured multi-container Docker compose environments, integrated TimescaleDB for time-series data, and developed the Next.js analytical UI.",
+      "highlight": "Monorepo with TimescaleDB + Qdrant Vector Retrieval",
       "tech": ["Next.js", "Express", "Python", "Qdrant", "TimescaleDB", "Redis", "Docker", "Tailwind CSS"],
       "coverImage": "/projects/prime.png",
       "gallery": [
@@ -44,10 +46,12 @@
       "slug": "ardana",
       "title": "Ardana",
       "date": "2025.01",
-      "type": "Fullstack Web Application",
+      "type": "Cooperative Financial Administration",
       "status": "Completed",
-      "desc": "Cooperative savings, loans, and financial administration system built with modern reactive server-driven architecture and real-time ledger accounting.",
-      "contribution": "Developed fullstack modules using Laravel 12 and Inertia.js React 19, implemented financial transaction integrity, and styled UI with Tailwind CSS v4.",
+      "desc": "A financial management and cooperative ledger platform handling member savings, loan disbursements, and automated interest installment calculations.",
+      "context": "Developed to test the cutting edge of modern Laravel: Laravel 12 paired with Inertia.js (React 19) and Tailwind CSS v4. Financial applications leave zero room for floating-point calculation errors, so enforcing strict transaction locks and ACID consistency in PostgreSQL was the central focus.",
+      "contribution": "Engineered the database schema with transactional rollback safety in PostgreSQL, built the reactive client with Inertia.js React, and designed clean accounting ledger dashboards.",
+      "highlight": "Laravel 12 + Inertia (React 19) with strict transactional accounting",
       "tech": ["Laravel 12", "Inertia.js", "React 19", "Vite 7", "PostgreSQL", "Tailwind CSS"],
       "coverImage": "/projects/ardana.png",
       "gallery": [
@@ -65,10 +69,12 @@
       "slug": "sharethem",
       "title": "ShareThem",
       "date": "2024.06",
-      "type": "Cross-Platform Mobile",
+      "type": "Offline Local P2P Transfer (Mobile)",
       "status": "Completed",
-      "desc": "High-speed offline peer-to-peer file transfer mobile app utilizing local area network device discovery and direct socket data streaming.",
-      "contribution": "Engineered zero-configuration mDNS service discovery via Bonsoir, optimized chunked TCP/UDP socket streaming, and built reactive Flutter UI.",
+      "desc": "A clean, lightweight mobile application for direct peer-to-peer file transfer over local Wi-Fi without needing an internet connection, account registration, or intrusive ads.",
+      "context": "I built this out of personal annoyance with commercial file-sharing apps that have become bloated with intrusive ads and slow connection handshakes. I wanted a zero-bullshit tool that just scans the local subnet via mDNS and streams byte chunks over raw TCP sockets at maximum Wi-Fi speeds.",
+      "contribution": "Implemented zero-config service discovery using the Bonsoir mDNS plugin, built chunked TCP/UDP socket streaming handlers in Dart, and created an intuitive mobile transfer UI.",
+      "highlight": "Zero-config mDNS discovery & raw socket streaming in Flutter",
       "tech": ["Flutter", "Dart", "Bonsoir (mDNS)", "Socket TCP/UDP", "Android"],
       "coverImage": "/projects/sharethem.png",
       "gallery": [
@@ -86,10 +92,12 @@
       "slug": "expasign",
       "title": "Expasign",
       "date": "2024.08",
-      "type": "Event Management & Fintech",
+      "type": "Event Registration & Payment Verification",
       "status": "Completed",
-      "desc": "Comprehensive competition & exhibition registration portal featuring automated payment verification via Saweria Webhook and ticket generation.",
-      "contribution": "Implemented backend API, designed automated payment verification webhook pipeline, and managed event participant data workflows.",
+      "desc": "An event and competition registration portal engineered to replace tedious manual bank transfer verification with instant, automated payment callbacks via Saweria.",
+      "context": "Created to solve a real bottleneck during a campus event where hundreds of participants were queuing for manual payment confirmation. By building a webhook receiver with signature validation, payment verification dropped from hours of manual checking to under 3 seconds.",
+      "contribution": "Built the event registration pipeline, configured automated Saweria webhook listeners with state reconciliation, and designed the ticket QR verification workflow.",
+      "highlight": "Automated payment verification pipeline with Saweria Webhooks",
       "tech": ["PHP", "React", "Saweria Webhook API", "MySQL", "Tailwind CSS"],
       "coverImage": "/projects/expasign.png",
       "gallery": [
@@ -108,10 +116,12 @@
       "slug": "invensync",
       "title": "InvenSync",
       "date": "2023.11",
-      "type": "Enterprise POS & Database",
+      "type": "Retail Inventory POS (Oracle Database 21c)",
       "status": "Completed",
-      "desc": "Retail point-of-sale cashier and inventory management system backed by Oracle Database 21c with enterprise-grade relational constraints.",
-      "contribution": "Designed relational schema, PL/SQL functions, sequences, and triggers in Oracle 21c, and built PHP MVC cashier transaction workflows.",
+      "desc": "A full-featured retail Point of Sale (POS) and inventory management web application powered by enterprise-grade Oracle Database 21c.",
+      "context": "A deeply educational dive into enterprise relational databases. Moving beyond standard MySQL forced me to master Oracle 21c's specific paradigms: custom PL/SQL sequences, automated stock deduction triggers, and complex multi-table joins within a PHP MVC architecture.",
+      "contribution": "Modeled the relational database schema, wrote native PL/SQL triggers for automated inventory auditing, and built the cashier checkout and reporting interfaces.",
+      "highlight": "Built on Oracle Database 21c with PL/SQL Triggers & Sequences",
       "tech": ["PHP MVC", "Oracle Database 21c", "PL/SQL", "Tailwind CSS", "JavaScript"],
       "coverImage": "/projects/invensync.png",
       "gallery": [
@@ -129,10 +139,12 @@
       "slug": "pickynet",
       "title": "PickyNet",
       "date": "2024.04",
-      "type": "Decision Support System (SPK)",
+      "type": "Decision Support System (WASPAS Algorithm)",
       "status": "Completed",
-      "desc": "Decision Support System for Internet Service Provider (ISP) selection implementing the WASPAS (Weight Aggregated Sum Product Assessment) multi-criteria algorithm.",
-      "contribution": "Implemented mathematical normalization, WSM & WPM ranking calculation engine, ISP parameter management, and interactive comparison UI.",
+      "desc": "A multi-criteria Decision Support System (SPK) designed to objectively evaluate and recommend Internet Service Providers (ISPs) using the WASPAS mathematical model.",
+      "context": "Built as an academic collaborative project to solve subjective ISP selection for boarding houses and offices. Translating raw mathematical formulas (combining Weight Sum Model and Weight Product Model) into dynamic, real-time ranking matrices was a rewarding algorithmic exercise.",
+      "contribution": "Programmed the core WASPAS normalization and lambda matrix weighting engine in Laravel 12, structured dynamic criteria parameter inputs, and co-designed the comparative result screens.",
+      "highlight": "Algorithmic decision modeling via WASPAS (WSM + WPM)",
       "tech": ["Laravel 12", "WASPAS Algorithm", "Alpine.js", "Tailwind CSS", "MySQL / SQLite"],
       "coverImage": "/projects/pickynet.png",
       "gallery": [
@@ -149,35 +161,35 @@
   "experience": [
     {
       "id": "e1",
-      "role": "Fullstack Software Engineer",
-      "company": "Freelance & Independent Projects",
+      "role": "Fullstack Developer & System Builder",
+      "company": "Independent & Client Projects",
       "period": "2024 — Present",
       "badges": ["Fullstack", "Microservices", "System Architecture"],
       "points": [
-        "Architected scalable web and mobile solutions including PRIME (predictive maintenance monorepo) and Ardana (cooperative finance platform).",
-        "Implemented reactive fullstack architectures integrating containerized services, vector databases, and real-time socket communication."
+        "Architected distributed and reactive web applications including PRIME (predictive maintenance monorepo) and Ardana (cooperative finance).",
+        "Researched and integrated modern data layers: TimescaleDB for time-series telemetry, Qdrant for vector search, and Redis for caching."
       ]
     },
     {
       "id": "e2",
-      "role": "Backend & Database Developer",
-      "company": "Academic & Client Projects",
+      "role": "Backend & Database Engineering",
+      "company": "Academic & Campus Projects",
       "period": "2023 — 2024",
-      "badges": ["Oracle DB", "PL/SQL", "PHP MVC"],
+      "badges": ["Oracle 21c", "PL/SQL", "Webhooks & APIs"],
       "points": [
-        "Engineered enterprise inventory and point-of-sale systems (InvenSync) utilizing Oracle Database 21c PL/SQL triggers and sequences.",
-        "Built automated webhook payment handling and event management platforms for regional competition registrations (Expasign)."
+        "Engineered enterprise-grade retail inventory POS systems (InvenSync) using Oracle Database 21c triggers, sequences, and procedures.",
+        "Developed automated webhook payment verification pipelines for campus competition portals (Expasign), eliminating manual confirmation queues."
       ]
     },
     {
       "id": "e3",
-      "role": "Mobile & Algorithmic Developer",
-      "company": "Research & Exploration",
+      "role": "Mobile & Algorithm Exploration",
+      "company": "Self-Initiated & Lab Research",
       "period": "2023 — 2024",
-      "badges": ["Flutter", "P2P", "SPK Algorithms"],
+      "badges": ["Flutter", "P2P Sockets", "Decision Algorithms"],
       "points": [
-        "Implemented WASPAS multi-criteria decision support systems for ISP selection with normalized mathematical modeling.",
-        "Developed offline high-speed P2P file sharing solutions using Flutter and mDNS local network service discovery (ShareThem)."
+        "Built zero-configuration local peer-to-peer file transfer systems using Flutter and raw TCP socket streaming (ShareThem).",
+        "Implemented algorithmic Decision Support Systems implementing WASPAS multi-criteria matrix mathematics (PickyNet)."
       ]
     }
   ],

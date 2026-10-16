@@ -29,7 +29,7 @@ export default function AboutSection() {
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent pointer-events-none" />
           <div className="relative z-10 w-full p-3 font-mono text-[10px] uppercase tracking-widest text-zinc-300 border-t border-white/10 bg-black/60 backdrop-blur-xs flex items-center justify-between">
-            <span>ID // {ME.name.replace(/ /g, "_").toUpperCase()}</span>
+            <span>{ME.name.toUpperCase()} // DEV</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           </div>
         </motion.div>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ExternalLink, Layers, Calendar, CheckCircle, Clock } from "lucide-react";
+import { ArrowLeft, ExternalLink, Calendar, CheckCircle, Clock, BookOpen, Cpu, Sparkles } from "lucide-react";
 import { PROJECTS, type Project } from "@/data/portfolio";
 
 const GithubIcon = ({ size = 15 }: { size?: number }) => (
@@ -11,6 +11,18 @@ const GithubIcon = ({ size = 15 }: { size?: number }) => (
 
 export function generateStaticParams() {
   return PROJECTS.map((p) => ({ slug: p.slug }));
+}
+
+function formatImageCaption(path: string): string {
+  const filename = path.split("/").pop() || "";
+  const clean = filename
+    .replace(/\.png$/i, "")
+    .replace(/^[0-9]+-/, "")
+    .replace(/[_-]/g, " ");
+  return clean
+    .split(" ")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
 }
 
 export default async function ProjectDetail({ params }: { params: Promise<{ slug: string }> }) {
@@ -26,46 +38,46 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
   const nextProject = currentIndex < PROJECTS.length - 1 ? PROJECTS[currentIndex + 1] : null;
 
   return (
-    <main className="min-h-screen bg-[#07080a] text-zinc-100 selection:bg-amber-400 selection:text-black relative pb-24">
-      {/* Subtle grid background */}
+    <main className="min-h-screen bg-[#08090c] text-zinc-100 selection:bg-amber-400 selection:text-black relative pb-28">
+      {/* Subtle architectural grid */}
       <div 
-        className="fixed inset-0 pointer-events-none opacity-20"
+        className="fixed inset-0 pointer-events-none opacity-[0.14]"
         style={{
-          backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)",
-          backgroundSize: "48px 48px"
+          backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)",
+          backgroundSize: "40px 40px"
         }} 
       />
 
-      {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-40 bg-[#07080a]/90 backdrop-blur-md border-b border-white/[0.08] px-6 py-4">
+      {/* Top Header Navigation */}
+      <header className="sticky top-0 z-40 bg-[#08090c]/90 backdrop-blur-md border-b border-white/[0.07] px-6 py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <Link
             href="/#projects"
             className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-zinc-400 hover:text-amber-400 transition-colors group"
           >
-            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+            <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform" />
             <span>Return to Portfolio</span>
           </Link>
-          <div className="font-mono text-[10px] tracking-widest text-zinc-500 uppercase">
-            ARCHIVE // {project.slug.toUpperCase()}
+          <div className="font-mono text-[11px] tracking-wider text-zinc-500">
+            Case Study <span className="text-zinc-600">//</span> <span className="text-zinc-300">{project.title}</span>
           </div>
         </div>
       </header>
 
       <div className="max-w-6xl mx-auto px-6 pt-10">
-        {/* Header Metadata */}
-        <div className="border-b border-white/10 pb-8">
-          <div className="flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-widest text-amber-400 mb-3">
-            <span className="flex items-center gap-1.5 px-2.5 py-0.5 bg-amber-400/10 border border-amber-400/30 rounded-xs">
+        {/* Project Header Info */}
+        <div className="border-b border-white/[0.08] pb-10">
+          <div className="flex flex-wrap items-center gap-2.5 font-mono text-[11px] uppercase tracking-wider text-amber-400 mb-4">
+            <span className="flex items-center gap-1.5 px-3 py-1 bg-amber-400/[0.08] border border-amber-400/25 rounded-sm">
               <Calendar size={12} /> {project.date}
             </span>
-            <span className="px-2.5 py-0.5 bg-white/[0.04] border border-white/10 text-zinc-300 rounded-xs">
+            <span className="px-3 py-1 bg-white/[0.03] border border-white/10 text-zinc-300 rounded-sm">
               {project.type}
             </span>
-            <span className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs border ${
+            <span className={`flex items-center gap-1.5 px-3 py-1 rounded-sm border ${
               project.status === "Ongoing" 
-                ? "border-amber-400/40 text-amber-300 bg-amber-400/5" 
-                : "border-emerald-400/40 text-emerald-300 bg-emerald-400/5"
+                ? "border-amber-400/30 text-amber-300 bg-amber-400/5" 
+                : "border-emerald-400/30 text-emerald-300 bg-emerald-400/5"
             }`}>
               {project.status === "Ongoing" ? <Clock size={12} /> : <CheckCircle size={12} />}
               {project.status}
@@ -73,25 +85,25 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
           </div>
 
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-            <div>
+            <div className="max-w-3xl">
               <h1 className="font-lagu text-4xl sm:text-5xl lg:text-6xl text-white tracking-tight">
                 {project.title}
               </h1>
-              <p className="mt-3 text-base sm:text-lg text-zinc-400 max-w-3xl leading-relaxed">
+              <p className="mt-4 text-base sm:text-lg text-zinc-300 leading-relaxed font-sans font-light">
                 {project.desc}
               </p>
             </div>
 
-            {/* External Links */}
+            {/* Links */}
             <div className="flex items-center gap-3 shrink-0">
               {project.github && (
                 <a
                   href={project.github}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-white/[0.05] hover:bg-white/[0.1] border border-white/15 text-zinc-200 hover:text-white rounded-xs font-mono text-xs uppercase tracking-wider transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-white/[0.04] hover:bg-white/[0.08] border border-white/15 text-zinc-200 hover:text-white rounded-sm font-mono text-xs uppercase tracking-wider transition-colors"
                 >
-                  <GithubIcon size={15} /> Source Code
+                  <GithubIcon size={14} /> Repository
                 </a>
               )}
               {project.demo && (
@@ -99,32 +111,34 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
                   href={project.demo}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-black font-semibold rounded-xs font-mono text-xs uppercase tracking-wider transition-colors shadow-[0_0_20px_rgba(245,158,11,0.2)]"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-black font-semibold rounded-sm font-mono text-xs uppercase tracking-wider transition-colors shadow-[0_0_20px_rgba(245,158,11,0.2)]"
                 >
-                  <ExternalLink size={15} /> Live Demo
+                  <ExternalLink size={14} /> Live View
                 </a>
               )}
             </div>
           </div>
         </div>
 
-        {/* Featured Cover Hero Showcase */}
+        {/* Featured Showcase Screenshot */}
         {project.coverImage && (
           <div className="mt-10">
-            <div className="hud-panel p-2 md:p-3 relative overflow-hidden group">
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xs border border-white/10 bg-black/80">
+            <div className="relative rounded-sm overflow-hidden border border-white/10 bg-black/70 shadow-[0_12px_40px_rgba(0,0,0,0.6)] group">
+              <div className="relative aspect-[16/9] w-full overflow-hidden">
                 <img
                   src={project.coverImage}
-                  alt={`${project.title} primary showcase`}
+                  alt={`${project.title} Interface Overview`}
                   className="w-full h-full object-cover object-top"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#07080a]/80 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-zinc-300">
-                  <span className="px-3 py-1 bg-black/80 border border-white/15 backdrop-blur-md">
-                    PRIMARY_SYSTEM_INTERFACE // {project.title}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#08090c]/90 via-transparent to-transparent pointer-events-none" />
+                
+                {/* Floating caption bar */}
+                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between font-mono text-[11px] text-zinc-300">
+                  <span className="px-3 py-1 bg-black/80 border border-white/15 backdrop-blur-md rounded-xs">
+                    Main Interface Preview // {project.title}
                   </span>
-                  <span className="hidden sm:inline px-3 py-1 bg-amber-400/20 text-amber-300 border border-amber-400/40 backdrop-blur-md">
-                    PRODUCTION CAPTURE
+                  <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 bg-amber-400/15 text-amber-300 border border-amber-400/30 backdrop-blur-md rounded-xs">
+                    <Sparkles size={11} /> Real Environment Capture
                   </span>
                 </div>
               </div>
@@ -132,131 +146,150 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
           </div>
         )}
 
-        {/* Breakdown Grid: Contributions & Tech Stack */}
-        <div className="mt-12 grid md:grid-cols-[1.5fr_1fr] gap-8">
-          <div className="hud-panel p-6 sm:p-8">
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-amber-400 mb-4">
-              <Layers size={16} />
-              <span>Engineering & Personal Contribution</span>
-            </div>
-            <p className="text-zinc-200 text-base leading-relaxed border-l-2 border-amber-400 pl-4 py-1 bg-amber-400/[0.02]">
-              {project.contribution}
-            </p>
+        {/* Two-Column Deep Dive: Developer's Log vs Technical Foundation */}
+        <div className="mt-12 grid lg:grid-cols-[1.4fr_1fr] gap-8">
+          
+          {/* Column 1: Context & Developer's Log (Human Touch) */}
+          <div className="space-y-6">
+            {project.context && (
+              <div className="hud-panel p-6 sm:p-8 relative">
+                <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-amber-400 mb-3">
+                  <BookOpen size={15} />
+                  <span>Developer&apos;s Log & Context</span>
+                </div>
+                <h3 className="font-lagu text-xl text-white mb-3">Behind the Build</h3>
+                <p className="text-zinc-300 text-sm sm:text-base leading-relaxed">
+                  {project.context}
+                </p>
 
-            <div className="mt-8 pt-6 border-t border-white/10">
-              <h3 className="font-mono text-xs uppercase tracking-widest text-zinc-400 mb-3">
-                Core Technologies & Infrastructure
-              </h3>
-              <div className="flex flex-wrap gap-2">
+                {project.highlight && (
+                  <div className="mt-5 p-3.5 bg-amber-400/[0.04] border-l-2 border-amber-400 text-amber-300 text-xs sm:text-sm font-mono">
+                    <span className="text-zinc-500 font-normal uppercase tracking-wider block text-[10px] mb-1">Key Takeaway</span>
+                    {project.highlight}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Engineering Contribution */}
+            <div className="hud-panel p-6 sm:p-8">
+              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-amber-400 mb-3">
+                <Cpu size={15} />
+                <span>Engineering & Personal Contribution</span>
+              </div>
+              <h3 className="font-lagu text-xl text-white mb-3">My Responsibilities</h3>
+              <p className="text-zinc-300 text-sm sm:text-base leading-relaxed">
+                {project.contribution}
+              </p>
+            </div>
+          </div>
+
+          {/* Column 2: Tech Specs & Architecture Summary */}
+          <div className="space-y-6">
+            <div className="hud-panel p-6 sm:p-8">
+              <div className="font-mono text-xs uppercase tracking-widest text-amber-400 mb-4">
+                Architecture & Tech Stack
+              </div>
+              <div className="flex flex-wrap gap-2 mb-6">
                 {project.tech.map((t) => (
                   <span
                     key={t}
-                    className="font-mono text-xs uppercase px-3 py-1.5 bg-white/[0.04] text-zinc-200 border border-white/10 rounded-xs"
+                    className="font-mono text-xs uppercase px-3 py-1.5 bg-white/[0.04] text-zinc-200 border border-white/10 rounded-sm"
                   >
                     {t}
                   </span>
                 ))}
               </div>
-            </div>
-          </div>
 
-          <div className="hud-panel p-6 sm:p-8 flex flex-col justify-between">
-            <div>
-              <div className="font-mono text-xs uppercase tracking-widest text-amber-400 mb-4">
-                // System Specifications
-              </div>
-              <ul className="space-y-3 font-mono text-xs text-zinc-300">
-                <li className="flex justify-between border-b border-white/5 pb-2">
-                  <span className="text-zinc-500">IDENTIFIER:</span>
-                  <span className="text-white">{project.id.toUpperCase()}</span>
-                </li>
-                <li className="flex justify-between border-b border-white/5 pb-2">
-                  <span className="text-zinc-500">STATUS:</span>
+              <div className="border-t border-white/10 pt-5 space-y-3 font-mono text-xs">
+                <div className="flex justify-between text-zinc-400">
+                  <span>Category</span>
+                  <span className="text-white text-right">{project.type}</span>
+                </div>
+                <div className="flex justify-between text-zinc-400">
+                  <span>Status</span>
                   <span className={project.status === "Ongoing" ? "text-amber-400" : "text-emerald-400"}>
-                    {project.status.toUpperCase()}
+                    {project.status}
                   </span>
-                </li>
-                <li className="flex justify-between border-b border-white/5 pb-2">
-                  <span className="text-zinc-500">CATEGORY:</span>
-                  <span className="text-white">{project.type}</span>
-                </li>
-                <li className="flex justify-between border-b border-white/5 pb-2">
-                  <span className="text-zinc-500">SNAPSHOT COUNT:</span>
-                  <span className="text-amber-400">{project.gallery?.length || 1} screens</span>
-                </li>
-              </ul>
+                </div>
+                <div className="flex justify-between text-zinc-400">
+                  <span>Captured Screens</span>
+                  <span className="text-zinc-200">{project.gallery?.length || 1} Views</span>
+                </div>
+              </div>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-white/10 font-mono text-[10px] text-zinc-500 tracking-widest uppercase">
-              CONFIDENTIAL RECORD // LOCAL DEPLOYMENT VERIFIED
+            <div className="p-5 border border-white/[0.07] bg-white/[0.01] rounded-sm font-mono text-xs text-zinc-400 leading-relaxed">
+              <span className="text-amber-400 uppercase tracking-widest text-[10px] block mb-1">Authenticity Note</span>
+              All interface screenshots shown below are live, unedited captures taken from my local development and production environments.
             </div>
           </div>
         </div>
 
-        {/* Full Visual Archive Gallery */}
+        {/* Visual Walkthrough Gallery */}
         {project.gallery && project.gallery.length > 0 && (
           <div className="mt-16">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-8">
+            <div className="flex items-baseline justify-between border-b border-white/10 pb-4 mb-8">
               <div>
-                <span className="font-mono text-[10px] tracking-widest text-amber-400 uppercase">
-                  // TELEMETRY ARCHIVE
+                <span className="font-mono text-[11px] tracking-wider text-amber-400 uppercase">
+                  Interface Archive
                 </span>
-                <h2 className="font-lagu text-3xl text-white mt-1">
-                  System Screenshots & Working Views
+                <h2 className="font-lagu text-2xl sm:text-3xl text-white mt-1">
+                  Screenshots & Workflow Views
                 </h2>
               </div>
-              <span className="font-mono text-xs text-zinc-500 uppercase tracking-widest">
-                {project.gallery.length} Captured Images
+              <span className="font-mono text-xs text-zinc-500">
+                {project.gallery.length} Snapshots
               </span>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-              {project.gallery.map((imgUrl, i) => (
-                <div
-                  key={i}
-                  className="hud-panel p-3 group relative flex flex-col justify-between overflow-hidden hover:border-amber-400/50 transition-all duration-300"
-                >
-                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xs border border-white/10 bg-black/60">
-                    <img
-                      src={imgUrl}
-                      alt={`${project.title} screenshot capture ${i + 1}`}
-                      className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    <div className="absolute top-2 left-2 px-2 py-0.5 bg-black/80 backdrop-blur-xs border border-white/10 font-mono text-[9px] uppercase tracking-widest text-zinc-300">
-                      FRAME // {String(i + 1).padStart(2, "0")}
+              {project.gallery.map((imgUrl, i) => {
+                const caption = formatImageCaption(imgUrl);
+                return (
+                  <div
+                    key={i}
+                    className="hud-panel p-3.5 group relative flex flex-col justify-between overflow-hidden hover:border-amber-400/40 transition-all duration-300"
+                  >
+                    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xs border border-white/10 bg-black/60">
+                      <img
+                        src={imgUrl}
+                        alt={`${project.title} - ${caption}`}
+                        className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="mt-3.5 flex items-center justify-between font-mono text-[11px] text-zinc-400 px-1">
+                      <span className="text-zinc-300 font-medium truncate max-w-[260px]">
+                        {caption}
+                      </span>
+                      <a
+                        href={imgUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-amber-400 hover:text-amber-300 flex items-center gap-1 transition-colors text-[10px] uppercase tracking-wider"
+                      >
+                        Full Image <ExternalLink size={11} />
+                      </a>
                     </div>
                   </div>
-                  <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-zinc-400">
-                    <span className="truncate max-w-[240px]">
-                      {imgUrl.split("/").pop()?.replace(/^[0-9]+-/, "").replace(".png", "").replace(/_/g, " ")}
-                    </span>
-                    <a
-                      href={imgUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-amber-400 hover:text-amber-300 flex items-center gap-1 transition-colors"
-                    >
-                      Full Size <ExternalLink size={10} />
-                    </a>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
 
-        {/* Navigation Footer to Next / Previous Projects */}
+        {/* Project Navigation Footer */}
         <div className="mt-20 pt-8 border-t border-white/10 flex items-center justify-between">
           {prevProject ? (
             <Link
               href={`/projects/${prevProject.slug}`}
               className="group flex flex-col text-left"
             >
-              <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-500 group-hover:text-amber-400 transition-colors">
+              <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 group-hover:text-amber-400 transition-colors">
                 ← Previous Project
               </span>
-              <span className="font-lagu text-xl text-white group-hover:text-amber-300 transition-colors">
+              <span className="font-lagu text-xl text-white group-hover:text-amber-300 transition-colors mt-0.5">
                 {prevProject.title}
               </span>
             </Link>
@@ -267,10 +300,10 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
               href={`/projects/${nextProject.slug}`}
               className="group flex flex-col text-right"
             >
-              <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-500 group-hover:text-amber-400 transition-colors">
+              <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 group-hover:text-amber-400 transition-colors">
                 Next Project →
               </span>
-              <span className="font-lagu text-xl text-white group-hover:text-amber-300 transition-colors">
+              <span className="font-lagu text-xl text-white group-hover:text-amber-300 transition-colors mt-0.5">
                 {nextProject.title}
               </span>
             </Link>
