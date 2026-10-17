@@ -203,10 +203,6 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
                     {project.status}
                   </span>
                 </div>
-                <div className="flex justify-between text-zinc-400">
-                  <span>Captured Screens</span>
-                  <span className="text-zinc-200">{project.gallery?.length || 1} Views</span>
-                </div>
               </div>
             </div>
 

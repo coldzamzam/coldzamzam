@@ -192,9 +192,6 @@ export default function ProjectsMobile() {
                   <span className="absolute top-2.5 left-2.5 px-2 py-0.5 bg-black/80 border border-white/15 font-mono text-[9px] uppercase tracking-widest text-amber-400">
                     Cover
                   </span>
-                  <span className="absolute bottom-2.5 right-2.5 px-2 py-0.5 bg-black/75 border border-white/10 font-mono text-[9px] uppercase tracking-wider text-zinc-300">
-                    {(p.gallery?.length ?? 1)} Views
-                  </span>
                 </div>
 
                 {/* Card Body */}
