@@ -12,7 +12,7 @@ export interface Project {
   context?: string;
   highlight?: string;
   tech: string[];
-  coverImage?: string;
+  coverImage: string;
   gallery?: string[];
   github?: string;
   demo?: string;

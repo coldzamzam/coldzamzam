@@ -19,7 +19,7 @@ const COVER_IS_FIRST_SHOT = new Set(["prime", "ardana", "expasign", "invensync"]
 function getProjectSlides(p: Project): { src: string; isCover: boolean }[] {
   const extra = COVER_IS_FIRST_SHOT.has(p.slug) ? (p.gallery ?? []).slice(1) : (p.gallery ?? []);
   return [
-    { src: p.coverImage, isCover: true },
+    ...(p.coverImage ? [{ src: p.coverImage, isCover: true }] : []),
     ...extra.map((src) => ({ src, isCover: false })),
   ];
 }
