@@ -14,18 +14,6 @@ export function generateStaticParams() {
   return PROJECTS.map((p) => ({ slug: p.slug }));
 }
 
-function formatImageCaption(path: string): string {
-  const filename = path.split("/").pop() || "";
-  const clean = filename
-    .replace(/\.png$/i, "")
-    .replace(/^[0-9]+-/, "")
-    .replace(/[_-]/g, " ");
-  return clean
-    .split(" ")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
-}
-
 export default async function ProjectDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const project = PROJECTS.find((p) => p.slug === slug);
@@ -135,11 +123,11 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
                 
                 {/* Floating caption bar */}
                 <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between font-mono text-[11px] text-zinc-300">
-                  <span className="px-3 py-1 bg-black/80 border border-white/15 backdrop-blur-md rounded-xs">
-                    Main Interface Preview // {project.title}
+                  <span className="px-3 py-1 bg-black/80 border border-amber-400/35 text-amber-300 backdrop-blur-md rounded-xs uppercase tracking-widest">
+                    Cover // {project.title}
                   </span>
-                  <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 bg-amber-400/15 text-amber-300 border border-amber-400/30 backdrop-blur-md rounded-xs">
-                    <Sparkles size={11} /> Real Environment Capture
+                  <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 bg-black/70 text-zinc-300 border border-white/15 backdrop-blur-md rounded-xs">
+                    <Sparkles size={11} className="text-amber-400" /> Production Capture
                   </span>
                 </div>
               </div>
@@ -228,7 +216,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
           </div>
         </div>
 
-        {/* Visual Walkthrough Gallery */}
+        {/* Visual Walkthrough Gallery (Captionless Screenshots) */}
         {project.gallery && project.gallery.length > 0 && (
           <div className="mt-16">
             <div className="flex items-baseline justify-between border-b border-white/10 pb-4 mb-8">
@@ -246,37 +234,27 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-              {project.gallery.map((imgUrl, i) => {
-                const caption = formatImageCaption(imgUrl);
-                return (
-                  <div
-                    key={i}
-                    className="hud-panel p-3.5 group relative flex flex-col justify-between overflow-hidden hover:border-amber-400/40 transition-all duration-300"
-                  >
-                    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xs border border-white/10 bg-black/60">
-                      <img
-                        src={imgUrl}
-                        alt={`${project.title} - ${caption}`}
-                        className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className="mt-3.5 flex items-center justify-between font-mono text-[11px] text-zinc-400 px-1">
-                      <span className="text-zinc-300 font-medium truncate max-w-[260px]">
-                        {caption}
-                      </span>
-                      <a
-                        href={imgUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-amber-400 hover:text-amber-300 flex items-center gap-1 transition-colors text-[10px] uppercase tracking-wider"
-                      >
-                        Full Image <ExternalLink size={11} />
-                      </a>
-                    </div>
+              {project.gallery.map((imgUrl, i) => (
+                <a
+                  key={i}
+                  href={imgUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hud-panel p-3 group relative block overflow-hidden hover:border-amber-400/40 transition-all duration-300"
+                >
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xs border border-white/10 bg-black/60">
+                    <img
+                      src={imgUrl}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <span className="absolute bottom-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity px-2.5 py-1 bg-black/80 border border-white/15 font-mono text-[10px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
+                      Full Image <ExternalLink size={11} />
+                    </span>
                   </div>
-                );
-              })}
+                </a>
+              ))}
             </div>
           </div>
         )}

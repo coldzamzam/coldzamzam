@@ -19,60 +19,53 @@ const GithubIcon = ({ size = 14 }: { size?: number }) => (
 /*                                                                      */
 /*   0.00 - 0.10  timeline slides horizontally to the card              */
 /*   0.10 - 0.13  card rests in the middle                              */
-/*   0.13 - 0.26  the screen zooms through the card's frame             */
-/*   0.26 - 0.82  fullscreen scenes (gallery, story, specs)             */
-/*   0.82 - 0.94  zoom back out of the frame to the timeline            */
-/*   0.94 - 1.00  rest, then the next project starts sliding in         */
+/*   0.13 - 0.25  the screen zooms through the card's cover frame       */
+/*   0.25 - 0.83  inside frame: cover -> floating gallery -> details    */
+/*   0.83 - 0.95  zoom back out of the frame to the timeline            */
+/*   0.95 - 1.00  rest, then the next project starts sliding in         */
 /* ------------------------------------------------------------------ */
 const TRAVEL_END = 0.1;
 const DIVE_START = 0.13;
-const DIVE_END = 0.26;
-const INSIDE_END = 0.82;
-const OUT_END = 0.94;
+const DIVE_END = 0.25;
+const INSIDE_END = 0.83;
+const OUT_END = 0.95;
 const INSIDE = INSIDE_END - DIVE_END;
-const SCENE_VH = 48; // scroll distance per scene, in vh
+const PROJECT_VH = 440; // total scroll height per project in vh
 
 // For these projects the cover image and the first gallery image are the same file.
 const COVER_IS_FIRST_SHOT = new Set(["prime", "ardana", "expasign", "invensync"]);
 
-type Scene =
-  | { kind: "cover" }
-  | { kind: "shot"; src: string; caption: string; n: number; total: number }
-  | { kind: "story" }
-  | { kind: "specs" }
-  | { kind: "close" };
+type FloatPreset = {
+  left: string;
+  width: string;
+  driftX: number; // px horizontal drift while floating
+  rotStart: number; // deg
+  rotEnd: number; // deg
+  scalePeak: number;
+  zIndex: number;
+};
 
-function captionOf(src: string, i: number) {
-  const base = (src.split("/").pop() ?? "").replace(/\.[a-z0-9]+$/i, "");
-  const words = base.replace(/^\d+[-_]?/, "").split(/[-_\s]+/).filter(Boolean);
-  if (!words.length) return `Screen ${i + 1}`;
-  return words.map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
-}
+// Spatial presets for floating gallery images so they drift in staggered, non-uniform lanes
+const FLOAT_PRESETS: FloatPreset[] = [
+  { left: "6%", width: "min(56vw, 680px)", driftX: 24, rotStart: -2.2, rotEnd: 1.1, scalePeak: 1.02, zIndex: 3 },
+  { left: "38%", width: "min(54vw, 650px)", driftX: -28, rotStart: 2.0, rotEnd: -1.2, scalePeak: 0.96, zIndex: 2 },
+  { left: "12%", width: "min(58vw, 700px)", driftX: 20, rotStart: -1.5, rotEnd: 1.6, scalePeak: 1.04, zIndex: 4 },
+  { left: "34%", width: "min(52vw, 640px)", driftX: -22, rotStart: 1.8, rotEnd: -1.0, scalePeak: 0.94, zIndex: 2 },
+  { left: "20%", width: "min(56vw, 680px)", driftX: 16, rotStart: -1.4, rotEnd: 0.9, scalePeak: 1.0, zIndex: 3 },
+  { left: "8%", width: "min(54vw, 650px)", driftX: -18, rotStart: 1.5, rotEnd: -1.3, scalePeak: 0.98, zIndex: 3 },
+];
 
-function buildScenes(p: Project): Scene[] {
+function getProjectShots(p: Project): string[] {
   const all = p.gallery ?? [];
-  const shots = COVER_IS_FIRST_SHOT.has(p.slug) ? all.slice(1) : all;
-  return [
-    { kind: "cover" },
-    ...shots.map<Scene>((src, i) => ({
-      kind: "shot",
-      src,
-      caption: captionOf(src, i),
-      n: i + 1,
-      total: shots.length,
-    })),
-    { kind: "story" },
-    { kind: "specs" },
-    { kind: "close" },
-  ];
+  return COVER_IS_FIRST_SHOT.has(p.slug) ? all.slice(1) : all;
 }
 
 const META = (() => {
   let start = 0;
   return PROJECTS.map((p) => {
-    const scenes = buildScenes(p);
-    const lenVh = (scenes.length * SCENE_VH) / INSIDE;
-    const m = { scenes, startVh: start, lenVh };
+    const shots = getProjectShots(p);
+    const lenVh = PROJECT_VH;
+    const m = { shots, startVh: start, lenVh };
     start += lenVh;
     return m;
   });
@@ -82,9 +75,9 @@ const TOTAL_VH = META.reduce((a, m) => a + m.lenVh, 0);
 const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const smoothstep = (a: number, b: number, v: number) => ease(clamp((v - a) / (b - a)));
 
 type Box = { x: number; y: number; w: number; h: number };
-type LayerCache = { img: HTMLElement | null; dim: HTMLElement | null; rv: HTMLElement[] };
 
 export default function ProjectsSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -93,9 +86,17 @@ export default function ProjectsSection() {
   const trackRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
+
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const coverRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const layerRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Inside-frame refs
+  const baseCoverImgRef = useRef<HTMLImageElement>(null);
+  const darkVeilRef = useRef<HTMLDivElement>(null);
+  const coverInfoRef = useRef<HTMLDivElement>(null);
+  const floatCardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const storyLayerRef = useRef<HTMLDivElement>(null);
+  const specsLayerRef = useRef<HTMLDivElement>(null);
 
   const geo = useRef<{ W: number; H: number; centers: number[]; covers: Box[] }>({
     W: 0,
@@ -103,7 +104,6 @@ export default function ProjectsSection() {
     centers: [],
     covers: [],
   });
-  const cache = useRef<LayerCache[]>([]);
   const curRef = useRef(0);
   const idxRef = useRef(0);
   const renderedIdx = useRef(0);
@@ -111,7 +111,7 @@ export default function ProjectsSection() {
 
   const [idx, setIdx] = useState(0);
   const proj = PROJECTS[idx];
-  const scenes = META[idx].scenes;
+  const shots = META[idx].shots;
 
   // Positions are read from layout offsets, so CSS transforms never affect them.
   const measure = useCallback(() => {
@@ -136,17 +136,11 @@ export default function ProjectsSection() {
     g.covers = coverRefs.current.map((el) => (el ? rel(el) : { x: 0, y: 0, w: 1, h: 1 }));
   }, []);
 
-  // Rebuild DOM lookups whenever a different project's scenes are mounted.
   useLayoutEffect(() => {
-    layerRefs.current.length = scenes.length;
-    cache.current = layerRefs.current.map((l) => ({
-      img: l?.querySelector<HTMLElement>("[data-img]") ?? null,
-      dim: l?.querySelector<HTMLElement>("[data-dim]") ?? null,
-      rv: l ? Array.from(l.querySelectorAll<HTMLElement>("[data-rv]")) : [],
-    }));
+    floatCardRefs.current.length = shots.length;
     renderedIdx.current = idx;
     applyRef.current(curRef.current);
-  }, [idx, scenes.length]);
+  }, [idx, shots.length]);
 
   useEffect(() => {
     const sec = sectionRef.current;
@@ -210,60 +204,100 @@ export default function ProjectsSection() {
       frame.style.borderRadius = `${lerp(2, 0, E)}px`;
       frame.style.pointerEvents = E > 0.95 ? "auto" : "none";
 
-      // 3. scenes inside the frame
       if (!showFrame) return;
-      const K = m.scenes.length;
+
+      // 3. continuous choreography inside the fullscreen frame (ip: 0..1)
       const ip = clamp((local - DIVE_END) / INSIDE);
-      const u = Math.min(K - 1, ip * (K - 0.5));
 
-      for (let k = 0; k < K; k++) {
-        const L = layerRefs.current[k];
-        const ch = cache.current[k];
-        if (!L || !ch) continue;
+      // Dark ambient veil over the cover image: fades in as floating gallery begins, fades out before zoom-out
+      const veilIn = smoothstep(0.08, 0.20, ip);
+      const veilOut = 1 - smoothstep(0.90, 0.98, ip);
+      const veilAlpha = veilIn * veilOut * clamp((E - 0.85) / 0.15);
 
-        const r = k === 0 ? 1 : ease(clamp((u - (k - 0.5)) / 0.4));
-        const nr = k === K - 1 ? 0 : ease(clamp((u - (k + 0.5)) / 0.4));
+      if (baseCoverImgRef.current) {
+        const coverScale = 1 + 0.08 * veilAlpha;
+        baseCoverImgRef.current.style.transform = `scale(${coverScale})`;
+      }
+      if (darkVeilRef.current) {
+        darkVeilRef.current.style.opacity = String(veilAlpha * 0.88);
+      }
 
-        if ((k > 0 && r <= 0.001) || nr >= 0.999) {
-          L.style.visibility = "hidden";
+      // Cover title & cover badge: visible right as dive completes, floats upward as gallery starts
+      if (coverInfoRef.current) {
+        const enterCover = clamp((E - 0.78) / 0.22);
+        const exitCover = 1 - smoothstep(0.05, 0.17, ip);
+        const covAlpha = enterCover * exitCover;
+        const covY = (1 - enterCover) * 28 - smoothstep(0.04, 0.18, ip) * 90;
+        coverInfoRef.current.style.opacity = String(covAlpha);
+        coverInfoRef.current.style.transform = `translate3d(0,${covY}px,0)`;
+      }
+
+      // Floating gallery images: drift upwards in staggered, overlapping waves (ip: 0.07 .. 0.62)
+      const N = m.shots.length;
+      const galStart = 0.07;
+      const galEnd = 0.62;
+      const span = galEnd - galStart;
+      // Each image gets a generous window so 2-3 images float on screen simultaneously
+      const win = N > 1 ? span / (1 + (N - 1) * 0.42) : span;
+      const step = N > 1 ? (span - win) / (N - 1) : 0;
+
+      for (let k = 0; k < N; k++) {
+        const cardEl = floatCardRefs.current[k];
+        if (!cardEl) continue;
+
+        const st = galStart + k * step;
+        const en = st + win;
+        const t = (ip - st) / (en - st);
+
+        if (t <= 0 || t >= 1) {
+          cardEl.style.visibility = "hidden";
           continue;
         }
-        L.style.visibility = "visible";
+        cardEl.style.visibility = "visible";
 
-        if (k === 0 || r >= 0.999) {
-          L.style.clipPath = "none";
+        const preset = FLOAT_PRESETS[k % FLOAT_PRESETS.length];
+        const fadeIn = smoothstep(0.0, 0.22, t);
+        const fadeOut = 1 - smoothstep(0.78, 1.0, t);
+        const alpha = fadeIn * fadeOut;
+
+        // Smooth floating trajectory from bottom (+68vh) to top (-68vh) with gentle horizontal drift & rotation
+        const yVh = lerp(68, -68, t);
+        const xPx = Math.sin(t * Math.PI) * preset.driftX;
+        const rot = lerp(preset.rotStart, preset.rotEnd, t);
+        const sc = lerp(0.88, preset.scalePeak, Math.sin(t * Math.PI));
+
+        cardEl.style.opacity = String(alpha);
+        cardEl.style.transform = `translate3d(${xPx}px, ${yVh}vh, 0) scale(${sc}) rotate(${rot}deg)`;
+      }
+
+      // Behind the build (story) layer: floats smoothly through center (ip: 0.54 .. 0.76)
+      if (storyLayerRef.current) {
+        const stT = (ip - 0.54) / (0.76 - 0.54);
+        if (stT <= 0 || stT >= 1) {
+          storyLayerRef.current.style.visibility = "hidden";
         } else {
-          const d = (1 - r) * 100;
-          L.style.clipPath = [
-            `inset(0 0 0 ${d}%)`,
-            `inset(${d}% 0 0 0)`,
-            `inset(0 ${d}% 0 0)`,
-            `inset(0 0 ${d}% 0)`,
-          ][k % 4];
+          storyLayerRef.current.style.visibility = "visible";
+          const stAlpha = smoothstep(0.0, 0.25, stT) * (1 - smoothstep(0.75, 1.0, stT));
+          const stY = lerp(70, -70, stT);
+          storyLayerRef.current.style.opacity = String(stAlpha);
+          storyLayerRef.current.style.transform = `translate3d(0, ${stY}px, 0)`;
         }
+      }
 
-        if (ch.img) {
-          const sh = (1 - r) * 10;
-          const [tx, ty] = [[sh, 0], [0, sh], [-sh, 0], [0, -sh]][k % 4];
-          const sc = (k === 0 ? 1 : 1.2 - 0.2 * r) * (1 + 0.1 * nr);
-          ch.img.style.transform = `translate3d(${tx}%,${ty}%,0) scale(${sc})`;
+      // What I did & Built with (specs) layer: floats smoothly into view (ip: 0.72 .. 0.95)
+      if (specsLayerRef.current) {
+        const spT = (ip - 0.72) / (0.95 - 0.72);
+        if (spT <= 0 || spT >= 1) {
+          specsLayerRef.current.style.visibility = "hidden";
+          specsLayerRef.current.style.pointerEvents = "none";
+        } else {
+          specsLayerRef.current.style.visibility = "visible";
+          const spAlpha = smoothstep(0.0, 0.25, spT) * (1 - smoothstep(0.78, 1.0, spT));
+          const spY = lerp(65, -55, spT);
+          specsLayerRef.current.style.opacity = String(spAlpha);
+          specsLayerRef.current.style.transform = `translate3d(0, ${spY}px, 0)`;
+          specsLayerRef.current.style.pointerEvents = E > 0.95 && spAlpha > 0.6 ? "auto" : "none";
         }
-        if (ch.dim) ch.dim.style.opacity = String(nr * 0.75);
-
-        const capIn = k === 0 ? clamp((E - 0.8) / 0.2) : clamp((r - 0.4) / 0.6);
-        const cap = Math.min(capIn, 1 - clamp(nr * 2.2));
-        const n = ch.rv.length;
-        ch.rv.forEach((el, j) => {
-          const v = clamp(cap * (1 + n * 0.16) - j * 0.16);
-          if (el.dataset.rv === "mask") {
-            el.style.transform = `translate3d(0,${(1 - v) * 105}%,0)`;
-          } else {
-            el.style.opacity = String(v);
-            el.style.transform = `translate3d(0,${(1 - v) * 26}px,0)`;
-          }
-        });
-
-        L.style.pointerEvents = E > 0.95 && r > 0.7 && nr < 0.3 ? "auto" : "none";
       }
     };
     applyRef.current = apply;
@@ -313,7 +347,7 @@ export default function ProjectsSection() {
     const curtain = curtainRef.current;
     if (!sec || !curtain) return;
     const vh = window.innerHeight;
-    const sVh = META[i].startVh + META[i].lenVh * (DIVE_END + 0.04);
+    const sVh = META[i].startVh + META[i].lenVh * (DIVE_END + 0.02);
     const y = sec.getBoundingClientRect().top + window.scrollY + (sVh * vh) / 100;
     curtain.style.opacity = "1";
     window.setTimeout(() => {
@@ -411,6 +445,9 @@ export default function ProjectsSection() {
                           className="w-full h-full object-cover object-top"
                           loading="lazy"
                         />
+                        <span className="absolute top-2 left-2 px-2 py-0.5 bg-black/75 border border-white/15 font-mono text-[9px] uppercase tracking-widest text-amber-400">
+                          Cover
+                        </span>
                       </div>
                       <div className="flex justify-between items-start mb-2">
                         <span className="text-[10px] font-mono text-amber-400 tracking-widest">{p.date}</span>
@@ -433,22 +470,148 @@ export default function ProjectsSection() {
         {/* ---------------- the project's frame, grows from the card to the full screen ---------------- */}
         <div
           ref={frameRef}
-          className="absolute z-20 overflow-hidden bg-black"
+          className="absolute z-20 overflow-hidden bg-[#06070a]"
           style={{ display: "none" }}
         >
-          {scenes.map((sc, k) => (
-            <div
-              key={`${proj.id}-${k}`}
-              ref={(el) => {
-                layerRefs.current[k] = el;
-              }}
-              className="absolute inset-0"
-              style={{ zIndex: k, visibility: k === 0 ? "visible" : "hidden" }}
-            >
-              <SceneView scene={sc} project={proj} index={idx} />
-              <div data-dim className="absolute inset-0 bg-black pointer-events-none" style={{ opacity: 0 }} />
+          {/* 1. Continuous Cover Image (Marked as the single Cover) */}
+          <div className="absolute inset-0 overflow-hidden">
+            <img
+              ref={baseCoverImgRef}
+              src={proj.coverImage}
+              alt={proj.title}
+              className="w-full h-full object-cover object-top will-change-transform"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent pointer-events-none" />
+          </div>
+
+          {/* Cover Info Overlay (only on the cover image) */}
+          <div
+            ref={coverInfoRef}
+            className="absolute left-[6%] right-[6%] bottom-[9%] z-10 pointer-events-none will-change-transform"
+            style={{ opacity: 0 }}
+          >
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 mb-4 bg-amber-400/15 border border-amber-400/35 font-mono text-[10px] text-amber-300 tracking-[0.25em] uppercase">
+              <span>Cover</span>
+              <span className="text-amber-400/50">//</span>
+              <span>{`0${idx + 1} · ${proj.date}`}</span>
             </div>
-          ))}
+            <h3 className="font-lagu font-bold uppercase tracking-tight text-5xl md:text-8xl text-white leading-none">
+              {proj.title}
+            </h3>
+            <p className="mt-4 font-mono text-xs text-zinc-300 uppercase tracking-widest">
+              {proj.type}
+            </p>
+          </div>
+
+          {/* Dark Ambient Veil for Floating Gallery & Project Details */}
+          <div
+            ref={darkVeilRef}
+            className="absolute inset-0 z-10 bg-[#06070a] backdrop-blur-md pointer-events-none"
+            style={{ opacity: 0 }}
+          />
+
+          {/* 2. Floating Gallery Layer (captionless screenshots drifting in 3D/parallax space) */}
+          <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+            {shots.map((src, k) => {
+              const preset = FLOAT_PRESETS[k % FLOAT_PRESETS.length];
+              return (
+                <div
+                  key={`${proj.id}-float-${k}`}
+                  ref={(el) => {
+                    floatCardRefs.current[k] = el;
+                  }}
+                  className="absolute top-1/2 -translate-y-1/2 will-change-transform"
+                  style={{
+                    left: preset.left,
+                    width: preset.width,
+                    zIndex: preset.zIndex,
+                    visibility: "hidden",
+                  }}
+                >
+                  <div className="relative rounded-sm overflow-hidden border border-white/15 bg-black/80 shadow-[0_32px_90px_rgba(0,0,0,0.85)]">
+                    <img
+                      src={src}
+                      alt=""
+                      className="w-full h-auto max-h-[66vh] object-contain block mx-auto"
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* 3. Behind the Build (Story) Floating Layer */}
+          <div
+            ref={storyLayerRef}
+            className="absolute inset-0 z-30 flex items-center px-[6%] pointer-events-none will-change-transform"
+            style={{ visibility: "hidden" }}
+          >
+            <div className="max-w-3xl">
+              <p className="font-mono text-xs text-amber-400 tracking-[0.25em] uppercase mb-4">
+                Behind the build
+              </p>
+              <p className="text-xl md:text-3xl text-zinc-100 font-light leading-relaxed">
+                {proj.context ?? proj.desc}
+              </p>
+              {proj.highlight && (
+                <p className="mt-8 border-l-2 border-amber-400 pl-4 font-mono text-sm text-amber-300">
+                  {proj.highlight}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* 4. Specs & Stack Floating Layer */}
+          <div
+            ref={specsLayerRef}
+            className="absolute inset-0 z-30 flex items-center px-[6%] will-change-transform"
+            style={{ visibility: "hidden", pointerEvents: "none" }}
+          >
+            <div className="w-full max-w-5xl grid md:grid-cols-2 gap-8 md:gap-14">
+              <div>
+                <p className="font-mono text-xs text-amber-400 tracking-[0.25em] uppercase mb-4">
+                  What I did
+                </p>
+                <p className="text-lg md:text-2xl text-zinc-100 font-light leading-relaxed">
+                  {proj.contribution}
+                </p>
+              </div>
+              <div>
+                <p className="font-mono text-xs text-amber-400 tracking-[0.25em] uppercase mb-4">
+                  Built with
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {proj.tech.map((t) => (
+                    <span
+                      key={t}
+                      className="inline-flex items-center gap-2 px-3 py-2 border border-white/10 bg-white/[0.04] font-mono text-xs uppercase text-zinc-200"
+                    >
+                      <TechIcon name={t} className="w-5 h-5" />
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                  {proj.github && (
+                    <a
+                      href={proj.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 hover:border-white/50 text-zinc-100 font-mono text-xs uppercase tracking-wider transition-colors"
+                    >
+                      <GithubIcon size={14} /> Repository
+                    </a>
+                  )}
+                  <Link
+                    href={`/projects/${proj.slug}`}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-black font-semibold font-mono text-xs uppercase tracking-wider transition-colors"
+                  >
+                    Full case study <ExternalLink size={13} />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* quick jump rail */}
@@ -484,162 +647,5 @@ export default function ProjectsSection() {
         />
       </div>
     </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Scenes shown inside the frame                                        */
-/* ------------------------------------------------------------------ */
-function SceneView({ scene, project, index }: { scene: Scene; project: Project; index: number }) {
-  if (scene.kind === "cover") {
-    return (
-      <>
-        <div data-img className="absolute inset-0 will-change-transform">
-          <img src={project.coverImage} alt="" className="w-full h-full object-cover object-top" />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
-        <div className="absolute left-[6%] right-[6%] bottom-[9%] pointer-events-none">
-          <p data-rv className="font-mono text-xs text-amber-400 tracking-[0.25em] uppercase mb-3">
-            {`0${index + 1} / ${project.date}`}
-          </p>
-          <div className="overflow-hidden">
-            <h3 data-rv="mask" className="font-lagu font-bold uppercase tracking-tight text-5xl md:text-8xl text-white leading-none">
-              {project.title}
-            </h3>
-          </div>
-          <p data-rv className="mt-4 font-mono text-xs text-zinc-300 uppercase tracking-widest">
-            {project.type}
-          </p>
-        </div>
-      </>
-    );
-  }
-
-  if (scene.kind === "close") {
-    return (
-      <div data-img className="absolute inset-0 will-change-transform">
-        <img src={project.coverImage} alt="" className="w-full h-full object-cover object-top" />
-      </div>
-    );
-  }
-
-  if (scene.kind === "shot") {
-    return (
-      <>
-        <div data-img className="absolute inset-0 will-change-transform">
-          <img
-            src={scene.src}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover object-top blur-2xl scale-110 opacity-40"
-          />
-          <div className="absolute inset-0 bg-[#06070a]/60" />
-          <div className="absolute inset-x-[5%] top-[12%] bottom-[24%] flex items-center justify-center">
-            <img
-              src={scene.src}
-              alt={`${project.title}, ${scene.caption}`}
-              className="max-w-full max-h-full object-contain shadow-[0_30px_80px_rgba(0,0,0,0.7)] border border-white/10"
-            />
-          </div>
-        </div>
-        <div className="absolute left-[6%] right-[6%] bottom-[7%] flex items-end justify-between gap-6 pointer-events-none">
-          <div>
-            <p data-rv className="font-mono text-xs text-amber-400 tracking-[0.25em] uppercase mb-2">
-              {`${String(scene.n).padStart(2, "0")} / ${String(scene.total).padStart(2, "0")}`}
-            </p>
-            <div className="overflow-hidden">
-              <h4 data-rv="mask" className="font-lagu font-bold uppercase tracking-tight text-3xl md:text-6xl text-white leading-none">
-                {scene.caption}
-              </h4>
-            </div>
-          </div>
-          <p data-rv className="hidden md:block font-mono text-xs text-zinc-400 uppercase tracking-widest">
-            {project.title}
-          </p>
-        </div>
-      </>
-    );
-  }
-
-  if (scene.kind === "story") {
-    return (
-      <>
-        <div data-img className="absolute inset-0 will-change-transform">
-          <img
-            src={project.coverImage}
-            alt=""
-            className="w-full h-full object-cover object-top blur-3xl scale-125 opacity-30"
-          />
-          <div className="absolute inset-0 bg-[#06070a]/85" />
-        </div>
-        <div className="absolute inset-0 flex items-center px-[6%]">
-          <div className="max-w-3xl">
-            <p data-rv className="font-mono text-xs text-amber-400 tracking-[0.25em] uppercase mb-4">
-              Behind the build
-            </p>
-            <p data-rv className="text-xl md:text-3xl text-zinc-100 font-light leading-relaxed">
-              {project.context ?? project.desc}
-            </p>
-            {project.highlight && (
-              <p data-rv className="mt-8 border-l-2 border-amber-400 pl-4 font-mono text-sm text-amber-300">
-                {project.highlight}
-              </p>
-            )}
-          </div>
-        </div>
-      </>
-    );
-  }
-
-  // specs
-  return (
-    <>
-      <div data-img className="absolute inset-0 bg-[#07080a] will-change-transform" />
-      <div className="absolute inset-0 flex items-center px-[6%]">
-        <div className="w-full max-w-5xl grid md:grid-cols-2 gap-8 md:gap-14">
-          <div>
-            <p data-rv className="font-mono text-xs text-amber-400 tracking-[0.25em] uppercase mb-4">
-              What I did
-            </p>
-            <p data-rv className="text-lg md:text-2xl text-zinc-100 font-light leading-relaxed">
-              {project.contribution}
-            </p>
-          </div>
-          <div>
-            <p data-rv className="font-mono text-xs text-amber-400 tracking-[0.25em] uppercase mb-4">
-              Built with
-            </p>
-            <div data-rv className="flex flex-wrap gap-2">
-              {project.tech.map((t) => (
-                <span
-                  key={t}
-                  className="inline-flex items-center gap-2 px-3 py-2 border border-white/10 bg-white/[0.04] font-mono text-xs uppercase text-zinc-200"
-                >
-                  <TechIcon name={t} className="w-5 h-5" />
-                  {t}
-                </span>
-              ))}
-            </div>
-            <div data-rv className="mt-8 flex flex-wrap items-center gap-3">
-              {project.github && (
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 hover:border-white/50 text-zinc-100 font-mono text-xs uppercase tracking-wider transition-colors"
-                >
-                  <GithubIcon size={14} /> Repository
-                </a>
-              )}
-              <Link
-                href={`/projects/${project.slug}`}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-black font-semibold font-mono text-xs uppercase tracking-wider transition-colors"
-              >
-                Full case study <ExternalLink size={13} />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
   );
 }
