@@ -3,7 +3,6 @@
 import { useEffect, useState, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import initialData from "@/data/githubContributions.json";
 
 interface ContributionDay {
   date: string;
@@ -19,6 +18,12 @@ interface GitHubData {
   contributions: ContributionDay[];
 }
 
+const SKELETON_DAYS: ContributionDay[] = Array.from({ length: 364 }, (_, i) => ({
+  date: `day-${i}`,
+  count: 0,
+  level: 0,
+}));
+
 const LEVEL_CLASSES: Record<number, string> = {
   0: "bg-white/[0.04] border border-white/[0.03]",
   1: "bg-amber-500/25 border border-amber-500/30",
@@ -28,11 +33,15 @@ const LEVEL_CLASSES: Record<number, string> = {
 };
 
 export default function GithubContributionCard() {
-  const [data, setData] = useState<GitHubData>(initialData as GitHubData);
+  const [data, setData] = useState<GitHubData>({
+    total: { lastYear: 0 },
+    contributions: SKELETON_DAYS,
+  });
+  const [loading, setLoading] = useState(true);
   const [hoveredDay, setHoveredDay] = useState<ContributionDay | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Re-fetch live contributions quietly on mount
+  // Fetch live contributions on mount
   useEffect(() => {
     let active = true;
     fetch("https://github-contributions-api.jogruber.de/v4/coldzamzam?y=last")
@@ -40,10 +49,11 @@ export default function GithubContributionCard() {
       .then((liveData) => {
         if (active && liveData?.contributions?.length) {
           setData(liveData);
+          setLoading(false);
         }
       })
       .catch(() => {
-        // Fallback remains on static initial snapshot
+        if (active) setLoading(false);
       });
 
     return () => {
@@ -77,6 +87,7 @@ export default function GithubContributionCard() {
   }, [data]);
 
   const formatDate = (dateStr: string) => {
+    if (dateStr.startsWith("day-")) return "";
     try {
       const d = new Date(dateStr);
       return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -123,14 +134,16 @@ export default function GithubContributionCard() {
 
         <div className="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 font-mono text-[10px] text-emerald-300">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          Live
+          {loading ? "Syncing" : "Live"}
         </div>
       </div>
 
       {/* Main Contribution Counter */}
       <div className="py-3 sm:py-4">
         <div className="flex items-baseline gap-2">
-          <span className="font-lagu text-2xl sm:text-3xl font-bold text-zinc-100">{totalCount}</span>
+          <span className="font-lagu text-2xl sm:text-3xl font-bold text-zinc-100">
+            {loading ? "..." : totalCount}
+          </span>
           <span className="font-mono text-xs text-amber-400 font-semibold tracking-wider uppercase">
             Contributions
           </span>
@@ -143,7 +156,7 @@ export default function GithubContributionCard() {
       {/* Heatmap Grid */}
       <div className="relative py-1.5 sm:py-2 w-full max-w-full overflow-hidden">
         <div ref={scrollRef} className="w-full max-w-full overflow-x-auto pb-1 scrollbar-none">
-          <div className="inline-flex gap-[3px] p-1 bg-black/30 rounded-lg border border-white/[0.04]">
+          <div className={`inline-flex gap-[3px] p-1 bg-black/30 rounded-lg border border-white/[0.04] ${loading ? "animate-pulse" : ""}`}>
             {weeks.map((week, wIndex) => (
               <div key={wIndex} className="flex flex-col gap-[3px]">
                 {week.map((day) => {
@@ -151,9 +164,9 @@ export default function GithubContributionCard() {
                   return (
                     <div
                       key={day.date}
-                      onMouseEnter={() => setHoveredDay(day)}
+                      onMouseEnter={() => !loading && setHoveredDay(day)}
                       onMouseLeave={() => setHoveredDay(null)}
-                      onClick={() => setHoveredDay(day)}
+                      onClick={() => !loading && setHoveredDay(day)}
                       className={`w-[6px] h-[6px] rounded-[1.5px] transition-transform duration-150 hover:scale-150 hover:z-10 cursor-pointer ${levelClass}`}
                     />
                   );
@@ -171,9 +184,12 @@ export default function GithubContributionCard() {
             <strong className="text-amber-400 font-semibold">{hoveredDay.count} commits</strong> on{" "}
             {formatDate(hoveredDay.date)}
           </span>
+        ) : loading ? (
+          <span className="text-zinc-500">Fetching live GitHub activity...</span>
         ) : (
           <span className="text-zinc-500">
-            Peak activity: <strong className="text-zinc-300">{maxDay?.count ?? 0} commits</strong> on {maxDay?.date ? formatDate(maxDay.date) : "N/A"}
+            Peak activity: <strong className="text-zinc-300">{maxDay?.count ?? 0} commits</strong> on{" "}
+            {maxDay?.date ? formatDate(maxDay.date) : "N/A"}
           </span>
         )}
 
