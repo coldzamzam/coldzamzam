@@ -13,6 +13,14 @@ import CustomCursor from "@/components/shared/CustomCursor";
 export const metadata: Metadata = {
   title: "Aqsa Zamzami - Portfolio",
   description: "Portfolio of Aqsa Zamzami, a fullstack developer and software engineer. Selected projects, experience, and tech stack.",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+  },
 };
 
 export default function RootLayout({
