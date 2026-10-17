@@ -9,7 +9,7 @@
     ],
     "location": "Indonesia",
     "avatar": "/assets/pasfoto-aqsa.png",
-    "resumeUrl": "#",
+    "resumeUrl": "/cv-aqsa-zamzami.pdf",
     "stats": [
       { "label": "Featured Projects", "value": "06" },
       { "label": "Core Frameworks", "value": "08" },
@@ -25,9 +25,9 @@
       "type": "Predictive Maintenance Monorepo",
       "status": "Completed",
       "desc": "An industrial predictive maintenance monorepo designed to process real-time machine telemetry, forecast failure risks before breakdowns happen, and provide semantic search across technical documentation.",
-      "context": "An exploration into distributed architecture. The main challenge was coordinating five services: handling sensor ingestion in Express alongside Python ML prediction tasks, while caching vector search results in Redis so queries stayed under 50ms.",
-      "contribution": "Architected the microservices monorepo setup, configured multi-container Docker compose environments, integrated TimescaleDB for time-series data, and developed the Next.js analytical UI.",
-      "highlight": "Monorepo with TimescaleDB + Qdrant Vector Retrieval",
+      "context": "Part of an industrial predictive maintenance monorepo. The central focus was building an intelligent AI diagnostic assistant capable of cross-referencing live machine telemetry with technical documentation.",
+      "contribution": "Engineered the RAG pipeline and interactive AI diagnostic chatbot. Indexed equipment service manuals and operating guides using Qdrant vector embeddings, built semantic search retrieval handlers, and integrated LLM responses so maintenance technicians can troubleshoot machine anomalies in real time.",
+      "highlight": "RAG Retrieval Pipeline and AI Diagnostic Chatbot with Qdrant",
       "tech": ["Next.js", "Express", "Python", "Qdrant", "TimescaleDB", "Redis", "Docker", "Tailwind CSS"],
       "coverImage": "/projects/prime.png",
       "gallery": [
@@ -49,9 +49,9 @@
       "type": "Cooperative Financial Administration",
       "status": "Completed",
       "desc": "A financial administration and cooperative ledger platform handling member savings, loan disbursements, and automated interest installment calculations.",
-      "context": "Built using Laravel 12, Inertia.js (React 19), and Tailwind CSS v4. Financial systems cannot tolerate calculation discrepancies, so enforcing strict database transaction locks and consistency in PostgreSQL was the central focus.",
-      "contribution": "Engineered the database schema with transactional rollback safety in PostgreSQL, built the reactive client with Inertia.js React, and designed clean accounting ledger dashboards.",
-      "highlight": "Laravel 12 + Inertia (React 19) with strict transactional accounting",
+      "context": "A financial administration and cooperative ledger platform where data integrity is paramount. Financial systems cannot tolerate calculation discrepancies, so establishing bulletproof relational accounting logic was the primary objective.",
+      "contribution": "Designed the relational database schema in PostgreSQL with strict transactional consistency and ACID rollback safety. Engineered core backend services in Laravel 12 to handle member savings deposits, loan disbursement workflows, and automated interest installment calculations.",
+      "highlight": "PostgreSQL Relational Ledger and Laravel 12 Backend Architecture",
       "tech": ["Laravel 12", "Inertia.js", "React 19", "Vite 7", "PostgreSQL", "Tailwind CSS"],
       "coverImage": "/projects/ardana.png",
       "gallery": [
@@ -72,9 +72,9 @@
       "type": "Offline Local P2P Transfer (Mobile)",
       "status": "Completed",
       "desc": "A lightweight mobile application for peer-to-peer file transfer over local Wi-Fi without requiring an internet connection or account setup.",
-      "context": "Built to avoid commercial file-sharing apps that are bloated with ads and complex connection steps. It scans the local subnet via mDNS and streams byte chunks over raw TCP sockets at full local Wi-Fi speeds.",
-      "contribution": "Implemented zero-config service discovery using the Bonsoir mDNS plugin, built chunked TCP/UDP socket streaming handlers in Dart, and created an intuitive mobile transfer UI.",
-      "highlight": "Zero-config mDNS discovery & raw socket streaming in Flutter",
+      "context": "A mobile application created as a clean, ad-free alternative to bloated commercial file-sharing utilities, focusing on seamless local peer-to-peer data exchange.",
+      "contribution": "Designed and built the reactive mobile frontend in Flutter. Crafted the animated device discovery radar, responsive file selection workflows, and an interactive real-time bottom sheet that tracks transfer progress with fluid visual feedback.",
+      "highlight": "Interactive Mobile UI and Real-Time Transfer Bottom-Sheet in Flutter",
       "tech": ["Flutter", "Dart", "Bonsoir (mDNS)", "Socket TCP/UDP", "Android"],
       "coverImage": "/projects/sharethem.png",
       "gallery": [
@@ -95,9 +95,9 @@
       "type": "Event Registration & Payment Verification",
       "status": "Completed",
       "desc": "An event and competition registration platform that automates ticket allocation and payment verification using Saweria webhook callbacks.",
-      "context": "Created to eliminate long manual bank transfer verification queues during a campus competition. The webhook receiver verifies signatures and updates participant payment status in under 3 seconds.",
-      "contribution": "Built the event registration pipeline, configured automated Saweria webhook listeners with state reconciliation, and designed the ticket QR verification workflow.",
-      "highlight": "Automated payment verification pipeline with Saweria Webhooks",
+      "context": "An event registration and competition platform built to streamline ticket purchases and participant intake during a large-scale campus technology event.",
+      "contribution": "Developed the responsive web frontend using React and Tailwind CSS. Built dynamic multi-step registration forms for various competition categories, interactive pricing tiers, and real-time payment status indicator screens.",
+      "highlight": "Responsive Multi-Category Registration and Checkout Frontend in React",
       "tech": ["PHP", "React", "Saweria Webhook API", "MySQL", "Tailwind CSS"],
       "coverImage": "/projects/expasign.png",
       "gallery": [
@@ -119,9 +119,9 @@
       "type": "Retail Inventory POS (Oracle Database 21c)",
       "status": "Completed",
       "desc": "A retail Point of Sale (POS) and inventory management web app powered by Oracle Database 21c.",
-      "context": "A practical dive into enterprise relational databases. Moving beyond standard MySQL meant working with Oracle 21c PL/SQL sequences, automated trigger-based stock audits, and multi-table transactions in an MVC structure.",
-      "contribution": "Modeled the relational database schema, wrote native PL/SQL triggers for automated inventory auditing, and built the cashier checkout and reporting interfaces.",
-      "highlight": "Built on Oracle Database 21c with PL/SQL Triggers & Sequences",
+      "context": "An enterprise retail Point of Sale (POS) and inventory management system designed around strict enterprise relational database standards.",
+      "contribution": "Modeled the enterprise relational database schema on Oracle Database 21c and implemented the custom PHP MVC backend. Wrote native PL/SQL triggers for automated inventory audits, sequences for receipt tracking, and backend controllers for multi-table cashier transactions.",
+      "highlight": "Oracle Database 21c PL/SQL Triggers and Custom PHP MVC Backend",
       "tech": ["PHP MVC", "Oracle Database 21c", "PL/SQL", "Tailwind CSS", "JavaScript"],
       "coverImage": "/projects/invensync.png",
       "gallery": [
@@ -142,9 +142,9 @@
       "type": "Decision Support System (WASPAS Algorithm)",
       "status": "Completed",
       "desc": "A decision support system that evaluates and ranks Internet Service Providers using the WASPAS multi-criteria mathematical model.",
-      "context": "An academic team project created to objectively compare ISP options for boarding houses and student housing. The core work involved translating WSM and WPM matrix formulas into real-time ranking calculations in Laravel.",
-      "contribution": "Programmed the core WASPAS normalization and lambda matrix weighting engine in Laravel 12, structured dynamic criteria parameter inputs, and co-designed the comparative result screens.",
-      "highlight": "Algorithmic decision modeling via WASPAS (WSM + WPM)",
+      "context": "An academic Decision Support System (SPK) designed to provide objective, mathematical recommendations for Internet Service Providers based on user-defined criteria.",
+      "contribution": "Implemented the core WASPAS mathematical decision engine in Laravel alongside the interactive user frontend. Programmed the matrix normalization (WSM) and exponential weighting (WPM) algorithms, and designed intuitive comparative result tables and ranking cards.",
+      "highlight": "WASPAS Mathematical Decision Engine and Comparative Frontend",
       "tech": ["Laravel 12", "WASPAS Algorithm", "Alpine.js", "Tailwind CSS", "MySQL / SQLite"],
       "coverImage": "/projects/pickynet.png",
       "gallery": [
@@ -216,7 +216,7 @@
   ],
   "contacts": [
     { "id": "github", "label": "GitHub", "href": "https://github.com/coldzamzam" },
-    { "id": "email", "label": "Email", "href": "mailto:placeholder@zamzami.dev" },
-    { "id": "linkedin", "label": "LinkedIn", "href": "https://linkedin.com/in/placeholder" }
+    { "id": "email", "label": "Email", "href": "mailto:zamaqsa99@gmail.com" },
+    { "id": "linkedin", "label": "LinkedIn", "href": "https://www.linkedin.com/in/aqsazamzami/" }
   ]
 }

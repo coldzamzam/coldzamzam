@@ -87,6 +87,9 @@ export default function HeroSection() {
             <a
               id="hero-cv"
               href={ME.resumeUrl}
+              target="_blank"
+              rel="noreferrer"
+              download="CV-Aqsa-Zamzami.pdf"
               className="flex items-center gap-2 px-7 py-3 border border-zinc-750 hover:border-amber-400/50 hover:bg-amber-400/5 transition-colors rounded-sm font-mono text-xs uppercase tracking-widest text-zinc-300 hover:text-white"
             >
               <Download size={14} /> Download CV
