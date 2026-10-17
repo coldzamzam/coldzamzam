@@ -7,6 +7,8 @@ import { ExternalLink, MoveRight } from "lucide-react";
 import { PROJECTS, type Project } from "@/data/portfolio";
 import { SectionHeading } from "@/components/layout/SectionShell";
 import TechIcon from "@/components/shared/TechIcon";
+import { useDeviceTier } from "@/hooks/useDeviceTier";
+import ProjectsMobile from "./projects/ProjectsMobile";
 
 const GithubIcon = ({ size = 14 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -80,6 +82,14 @@ const smoothstep = (a: number, b: number, v: number) => ease(clamp((v - a) / (b 
 type Box = { x: number; y: number; w: number; h: number };
 
 export default function ProjectsSection() {
+  const { isMobileOrTablet } = useDeviceTier();
+  if (isMobileOrTablet) {
+    return <ProjectsMobile />;
+  }
+  return <ProjectsDesktop />;
+}
+
+function ProjectsDesktop() {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const worldRef = useRef<HTMLDivElement>(null);
@@ -184,7 +194,7 @@ export default function ProjectsSection() {
       const restY = cv.y;
       const cx = restX + cv.w / 2;
       const cy = restY + cv.h / 2;
-      const Smax = g.W / cv.w;
+      const Smax = Math.max(g.W / cv.w, g.H / cv.h);
       const S = lerp(1, Smax, E);
       const nx = lerp(cx, g.W / 2, E);
       const ny = lerp(cy, g.H / 2, E);
@@ -208,6 +218,7 @@ export default function ProjectsSection() {
 
       // 3. continuous choreography inside the fullscreen frame (ip: 0..1)
       const ip = clamp((local - DIVE_END) / INSIDE);
+      const isMobile = g.W < 768;
 
       // Dark ambient veil over the cover image: fades in as floating gallery begins, fades out before zoom-out
       const veilIn = smoothstep(0.08, 0.20, ip);
@@ -260,9 +271,20 @@ export default function ProjectsSection() {
         const fadeOut = 1 - smoothstep(0.78, 1.0, t);
         const alpha = fadeIn * fadeOut;
 
+        // Responsive positioning: wider, centered lanes on mobile; staggered wide lanes on desktop
+        if (isMobile) {
+          const mobileLefts = ["5%", "7%", "4%", "8%", "6%", "5%"];
+          cardEl.style.left = mobileLefts[k % mobileLefts.length];
+          cardEl.style.width = "88vw";
+        } else {
+          cardEl.style.left = preset.left;
+          cardEl.style.width = preset.width;
+        }
+
         // Smooth floating trajectory from bottom (+68vh) to top (-68vh) with gentle horizontal drift & rotation
         const yVh = lerp(68, -68, t);
-        const xPx = Math.sin(t * Math.PI) * preset.driftX;
+        const driftFactor = isMobile ? 0.35 : 1;
+        const xPx = Math.sin(t * Math.PI) * preset.driftX * driftFactor;
         const rot = lerp(preset.rotStart, preset.rotEnd, t);
         const sc = lerp(0.88, preset.scalePeak, Math.sin(t * Math.PI));
 
@@ -370,10 +392,10 @@ export default function ProjectsSection() {
         <div ref={worldRef} className="absolute inset-0" style={{ transformOrigin: "0 0" }}>
           <div
             ref={trackRef}
-            className="absolute top-0 left-0 h-full pt-20 flex items-center gap-16 pr-[40vw] will-change-transform"
+            className="absolute top-0 left-0 h-full pt-14 md:pt-20 flex items-center gap-10 md:gap-16 pr-[40vw] will-change-transform"
           >
             {/* path (sits on the centre line of the cards, below the navbar) */}
-            <div className="absolute top-[calc(50%+2.5rem)] left-0 right-0 h-[1px] bg-white/10 -translate-y-1/2 overflow-hidden pointer-events-none">
+            <div className="absolute top-[calc(50%+1.75rem)] md:top-[calc(50%+2.5rem)] left-0 right-0 h-[1px] bg-white/10 -translate-y-1/2 overflow-hidden pointer-events-none">
               <motion.div
                 className="absolute top-0 bottom-0 w-[360px] bg-gradient-to-r from-transparent via-amber-400/40 to-transparent"
                 animate={{ x: ["-100%", "400%"] }}
@@ -386,15 +408,15 @@ export default function ProjectsSection() {
               ref={(el) => {
                 itemRefs.current[0] = el;
               }}
-              className="relative flex-shrink-0 h-full flex flex-col justify-center"
+              className="relative flex-shrink-0 h-full flex flex-col justify-center px-2 sm:px-0"
               style={{ width: "min(520px, 86vw)" }}
             >
               <SectionHeading index="01" title="Projects" subtitle="Selected work" />
-              <p className="text-zinc-400 leading-relaxed max-w-sm text-sm">
+              <p className="text-zinc-400 leading-relaxed max-w-sm text-xs sm:text-sm">
                 A selection of software platforms, protocols, and database systems I&apos;ve engineered. Keep scrolling and
                 each one opens up in turn.
               </p>
-              <div className="mt-8 flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest text-amber-400">
+              <div className="mt-6 sm:mt-8 flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest text-amber-400">
                 <span>{String(PROJECTS.length).padStart(2, "0")} projects</span>
                 <motion.span animate={{ x: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
                   <MoveRight size={16} />
@@ -411,33 +433,33 @@ export default function ProjectsSection() {
                   ref={(el) => {
                     itemRefs.current[i + 1] = el;
                   }}
-                  className="relative flex-shrink-0 h-[64vh]"
-                  style={{ width: "min(380px, 78vw)" }}
+                  className="relative flex-shrink-0 h-[68vh] md:h-[64vh] flex items-center md:block"
+                  style={{ width: "min(380px, 84vw)" }}
                 >
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 z-20">
+                  <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 z-20">
                     <div className="w-5 h-5 rounded-full bg-[#0a0b0e] border border-zinc-700 flex items-center justify-center">
                       <div className="w-1.5 h-1.5 rounded-full bg-zinc-200" />
                     </div>
                   </div>
                   <div
-                    className={`absolute left-[9px] w-[1px] bg-white/10 ${
+                    className={`hidden md:block absolute left-[9px] w-[1px] bg-white/10 ${
                       top ? "bottom-1/2 h-[calc(50%-1.5rem)]" : "top-1/2 h-[calc(50%-1.5rem)]"
                     }`}
                   />
-                  <div className={`absolute left-0 w-full ${top ? "bottom-1/2 mb-6" : "top-1/2 mt-6"}`}>
+                  <div className={`w-full md:absolute md:left-0 ${top ? "md:bottom-1/2 md:mb-5" : "md:top-1/2 md:mt-5"}`}>
                     <div
                       role="button"
                       tabIndex={0}
                       id={`project-${p.id}`}
                       onClick={() => jumpTo(i)}
                       onKeyDown={(e) => e.key === "Enter" && jumpTo(i)}
-                      className="hud-panel group w-full cursor-pointer text-left p-4 md:p-5 transition-colors hover:border-zinc-600"
+                      className="hud-panel group w-full cursor-pointer text-left p-4 md:p-4 lg:p-5 transition-colors hover:border-zinc-600"
                     >
                       <div
                         ref={(el) => {
                           coverRefs.current[i] = el;
                         }}
-                        className="relative w-full aspect-[16/9] mb-3.5 overflow-hidden bg-black/60"
+                        className="relative w-full aspect-[16/9] mb-3 overflow-hidden bg-black/60"
                       >
                         <img
                           src={p.coverImage}
@@ -449,13 +471,13 @@ export default function ProjectsSection() {
                           Cover
                         </span>
                       </div>
-                      <div className="flex justify-between items-start mb-2">
-                        <span className="text-[10px] font-mono text-amber-400 tracking-widest">{p.date}</span>
-                        <span className="text-[10px] font-mono text-zinc-400 uppercase px-2 py-0.5 border border-white/10 bg-white/[0.02]">
+                      <div className="flex justify-between items-start gap-2 mb-1.5">
+                        <span className="text-[10px] font-mono text-amber-400 tracking-widest shrink-0">{p.date}</span>
+                        <span className="text-[10px] font-mono text-zinc-400 uppercase px-2 py-0.5 border border-white/10 bg-white/[0.02] truncate">
                           {p.type}
                         </span>
                       </div>
-                      <h3 className="text-xl font-lagu text-white mb-2 group-hover:text-amber-300 transition-colors">
+                      <h3 className="text-lg md:text-xl font-lagu text-white mb-1.5 group-hover:text-amber-300 transition-colors">
                         {p.title}
                       </h3>
                       <p className="text-xs md:text-sm text-zinc-400 leading-relaxed line-clamp-2">{p.desc}</p>
@@ -487,18 +509,18 @@ export default function ProjectsSection() {
           {/* Cover Info Overlay (only on the cover image) */}
           <div
             ref={coverInfoRef}
-            className="absolute left-[6%] right-[6%] bottom-[9%] z-10 pointer-events-none will-change-transform"
+            className="absolute left-5 right-5 sm:left-[6%] sm:right-[6%] bottom-16 md:bottom-[9%] z-10 pointer-events-none will-change-transform"
             style={{ opacity: 0 }}
           >
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 mb-4 bg-amber-400/15 border border-amber-400/35 font-mono text-[10px] text-amber-300 tracking-[0.25em] uppercase">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 mb-3 sm:mb-4 bg-amber-400/15 border border-amber-400/35 font-mono text-[10px] text-amber-300 tracking-[0.25em] uppercase">
               <span>Cover</span>
               <span className="text-amber-400/50">//</span>
               <span>{`0${idx + 1} · ${proj.date}`}</span>
             </div>
-            <h3 className="font-lagu font-bold uppercase tracking-tight text-5xl md:text-8xl text-white leading-none">
+            <h3 className="font-lagu font-bold uppercase tracking-tight text-4xl sm:text-6xl md:text-8xl text-white leading-none">
               {proj.title}
             </h3>
-            <p className="mt-4 font-mono text-xs text-zinc-300 uppercase tracking-widest">
+            <p className="mt-3 sm:mt-4 font-mono text-[11px] sm:text-xs text-zinc-300 uppercase tracking-widest">
               {proj.type}
             </p>
           </div>
@@ -532,7 +554,7 @@ export default function ProjectsSection() {
                     <img
                       src={src}
                       alt=""
-                      className="w-full h-auto max-h-[66vh] object-contain block mx-auto"
+                      className="w-full h-auto max-h-[58vh] md:max-h-[66vh] object-contain block mx-auto"
                     />
                   </div>
                 </div>
@@ -543,18 +565,18 @@ export default function ProjectsSection() {
           {/* 3. Behind the Build (Story) Floating Layer */}
           <div
             ref={storyLayerRef}
-            className="absolute inset-0 z-30 flex items-center px-[6%] pointer-events-none will-change-transform"
+            className="absolute inset-0 z-30 flex items-center px-5 sm:px-[6%] pointer-events-none will-change-transform"
             style={{ visibility: "hidden" }}
           >
             <div className="max-w-3xl">
-              <p className="font-mono text-xs text-amber-400 tracking-[0.25em] uppercase mb-4">
+              <p className="font-mono text-[11px] sm:text-xs text-amber-400 tracking-[0.25em] uppercase mb-3 sm:mb-4">
                 Behind the build
               </p>
-              <p className="text-xl md:text-3xl text-zinc-100 font-light leading-relaxed">
+              <p className="text-lg sm:text-2xl md:text-3xl text-zinc-100 font-light leading-relaxed">
                 {proj.context ?? proj.desc}
               </p>
               {proj.highlight && (
-                <p className="mt-8 border-l-2 border-amber-400 pl-4 font-mono text-sm text-amber-300">
+                <p className="mt-5 sm:mt-8 border-l-2 border-amber-400 pl-3.5 sm:pl-4 font-mono text-xs sm:text-sm text-amber-300">
                   {proj.highlight}
                 </p>
               )}
@@ -564,47 +586,47 @@ export default function ProjectsSection() {
           {/* 4. Specs & Stack Floating Layer */}
           <div
             ref={specsLayerRef}
-            className="absolute inset-0 z-30 flex items-center px-[6%] will-change-transform"
+            className="absolute inset-0 z-30 flex items-center px-5 sm:px-[6%] will-change-transform"
             style={{ visibility: "hidden", pointerEvents: "none" }}
           >
-            <div className="w-full max-w-5xl grid md:grid-cols-2 gap-8 md:gap-14">
+            <div className="w-full max-w-5xl grid md:grid-cols-2 gap-5 sm:gap-8 md:gap-14">
               <div>
-                <p className="font-mono text-xs text-amber-400 tracking-[0.25em] uppercase mb-4">
+                <p className="font-mono text-[11px] sm:text-xs text-amber-400 tracking-[0.25em] uppercase mb-2.5 sm:mb-4">
                   What I did
                 </p>
-                <p className="text-lg md:text-2xl text-zinc-100 font-light leading-relaxed">
+                <p className="text-sm sm:text-lg md:text-2xl text-zinc-100 font-light leading-relaxed">
                   {proj.contribution}
                 </p>
               </div>
               <div>
-                <p className="font-mono text-xs text-amber-400 tracking-[0.25em] uppercase mb-4">
+                <p className="font-mono text-[11px] sm:text-xs text-amber-400 tracking-[0.25em] uppercase mb-2.5 sm:mb-4">
                   Built with
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {proj.tech.map((t) => (
                     <span
                       key={t}
-                      className="inline-flex items-center gap-2 px-3 py-2 border border-white/10 bg-white/[0.04] font-mono text-xs uppercase text-zinc-200"
+                      className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3 sm:py-2 border border-white/10 bg-white/[0.04] font-mono text-[11px] sm:text-xs uppercase text-zinc-200"
                     >
-                      <TechIcon name={t} className="w-5 h-5" />
+                      <TechIcon name={t} className="w-4 h-4 sm:w-5 sm:h-5" />
                       {t}
                     </span>
                   ))}
                 </div>
-                <div className="mt-8 flex flex-wrap items-center gap-3">
+                <div className="mt-5 sm:mt-8 flex flex-wrap items-center gap-2.5 sm:gap-3">
                   {proj.github && (
                     <a
                       href={proj.github}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 hover:border-white/50 text-zinc-100 font-mono text-xs uppercase tracking-wider transition-colors"
+                      className="inline-flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2 border border-white/20 hover:border-white/50 text-zinc-100 font-mono text-[11px] sm:text-xs uppercase tracking-wider transition-colors"
                     >
                       <GithubIcon size={14} /> Repository
                     </a>
                   )}
                   <Link
                     href={`/projects/${proj.slug}`}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-black font-semibold font-mono text-xs uppercase tracking-wider transition-colors"
+                    className="inline-flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2 bg-amber-400 hover:bg-amber-300 text-black font-semibold font-mono text-[11px] sm:text-xs uppercase tracking-wider transition-colors"
                   >
                     Full case study <ExternalLink size={13} />
                   </Link>
@@ -614,28 +636,28 @@ export default function ProjectsSection() {
           </div>
         </div>
 
-        {/* quick jump rail */}
+        {/* quick jump rail: bottom pill bar on mobile, right vertical rail on desktop */}
         <nav
           aria-label="Projects"
-          className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-30 flex flex-col items-end gap-3 font-mono text-[11px]"
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 md:bottom-auto md:left-auto md:translate-x-0 md:right-6 md:top-1/2 md:-translate-y-1/2 z-30 flex flex-row md:flex-col items-center md:items-end gap-2.5 md:gap-3 px-3.5 py-2 md:p-0 rounded-full md:rounded-none bg-black/75 md:bg-transparent border border-white/10 md:border-0 backdrop-blur-md md:backdrop-blur-none font-mono text-[11px]"
         >
           {PROJECTS.map((p, j) => (
             <button
               key={p.id}
               type="button"
               onClick={() => jumpTo(j)}
-              className="group flex items-center gap-2"
+              className="group flex items-center gap-1.5 md:gap-2 px-1 md:px-0"
               aria-label={`Open ${p.title}`}
             >
-              <span className="opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest text-zinc-300">
+              <span className="hidden md:inline opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest text-zinc-300">
                 {p.title}
               </span>
               <span
-                className={`block h-px transition-all ${
+                className={`hidden md:block h-px transition-all ${
                   idx === j ? "w-8 bg-amber-400" : "w-4 bg-white/30 group-hover:w-6"
                 }`}
               />
-              <span className={idx === j ? "text-amber-400" : "text-zinc-500"}>{String(j + 1).padStart(2, "0")}</span>
+              <span className={idx === j ? "text-amber-400 font-bold" : "text-zinc-500"}>{String(j + 1).padStart(2, "0")}</span>
             </button>
           ))}
         </nav>

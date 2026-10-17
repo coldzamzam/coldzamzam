@@ -7,10 +7,12 @@ const INTERACTIVE = "a, button, [role='tab'], input, textarea";
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
-  const [isClient, setIsClient] = useState(false);
+  const [hasFinePointer, setHasFinePointer] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
+    const mq = window.matchMedia("(pointer: fine)");
+    if (!mq.matches) return;
+    setHasFinePointer(true);
 
     // Direct DOM updates avoid React re-renders for lag-free tracking
     const updatePosition = (e: MouseEvent) => {
@@ -48,7 +50,7 @@ export default function CustomCursor() {
     };
   }, []);
 
-  if (!isClient) return null;
+  if (!hasFinePointer) return null;
 
   return (
     <div

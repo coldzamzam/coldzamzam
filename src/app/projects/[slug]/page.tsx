@@ -38,22 +38,23 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
       />
 
       {/* Top Header Navigation */}
-      <header className="sticky top-0 z-40 bg-[#08090c]/90 backdrop-blur-md border-b border-white/[0.07] px-6 py-4">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-[#08090c]/90 backdrop-blur-md border-b border-white/[0.07] px-4 sm:px-6 py-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
           <Link
             href="/#projects"
-            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-zinc-400 hover:text-amber-400 transition-colors group"
+            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-zinc-400 hover:text-amber-400 transition-colors group shrink-0"
           >
             <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform" />
             <span>Return to Portfolio</span>
           </Link>
-          <div className="font-mono text-[11px] tracking-wider text-zinc-500">
-            Case Study <span className="text-zinc-600">//</span> <span className="text-zinc-300">{project.title}</span>
+          <div className="font-mono text-[11px] tracking-wider text-zinc-500 truncate">
+            <span className="hidden sm:inline">Case Study // </span>
+            <span className="text-zinc-300">{project.title}</span>
           </div>
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-6 pt-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 sm:pt-10">
         {/* Project Header Info */}
         <div className="border-b border-white/[0.08] pb-10">
           <div className="flex flex-wrap items-center gap-2.5 font-mono text-[11px] uppercase tracking-wider text-amber-400 mb-4">
@@ -218,29 +219,30 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
 
         {/* Visual Walkthrough Gallery (Captionless Screenshots) */}
         {project.gallery && project.gallery.length > 0 && (
-          <div className="mt-16">
-            <div className="flex items-baseline justify-between border-b border-white/10 pb-4 mb-8">
+          <div className="mt-12 sm:mt-16">
+            <div className="flex items-baseline justify-between border-b border-white/10 pb-3.5 sm:pb-4 mb-6 sm:mb-8">
               <div>
                 <span className="font-mono text-[11px] tracking-wider text-amber-400 uppercase">
                   Interface Archive
                 </span>
-                <h2 className="font-lagu text-2xl sm:text-3xl text-white mt-1">
+                <h2 className="font-lagu text-xl sm:text-3xl text-white mt-1">
                   Screenshots & Workflow Views
                 </h2>
               </div>
               <span className="font-mono text-xs text-zinc-500">
+                <span className="md:hidden">Swipe → · </span>
                 {project.gallery.length} Snapshots
               </span>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-3 md:pb-0 md:grid md:grid-cols-2 md:gap-6">
               {project.gallery.map((imgUrl, i) => (
                 <a
                   key={i}
                   href={imgUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="hud-panel p-3 group relative block overflow-hidden hover:border-amber-400/40 transition-all duration-300"
+                  className="hud-panel p-2.5 sm:p-3 group relative block shrink-0 w-[86vw] sm:w-[75vw] md:w-auto snap-center overflow-hidden hover:border-amber-400/40 transition-all duration-300"
                 >
                   <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xs border border-white/10 bg-black/60">
                     <img
@@ -249,7 +251,10 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
                       className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
-                    <span className="absolute bottom-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity px-2.5 py-1 bg-black/80 border border-white/15 font-mono text-[10px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
+                    <span className="md:hidden absolute top-2 left-2 px-2 py-0.5 bg-black/80 border border-white/15 font-mono text-[9px] text-zinc-300">
+                      {String(i + 1).padStart(2, "0")} / {String(project.gallery?.length ?? 1).padStart(2, "0")}
+                    </span>
+                    <span className="absolute bottom-2.5 right-2.5 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity px-2.5 py-1 bg-black/80 border border-white/15 font-mono text-[10px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
                       Full Image <ExternalLink size={11} />
                     </span>
                   </div>
@@ -260,16 +265,16 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
         )}
 
         {/* Project Navigation Footer */}
-        <div className="mt-20 pt-8 border-t border-white/10 flex items-center justify-between">
+        <div className="mt-16 sm:mt-20 pt-8 border-t border-white/10 flex items-center justify-between gap-4">
           {prevProject ? (
             <Link
               href={`/projects/${prevProject.slug}`}
               className="group flex flex-col text-left"
             >
-              <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 group-hover:text-amber-400 transition-colors">
+              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-widest text-zinc-500 group-hover:text-amber-400 transition-colors">
                 ← Previous Project
               </span>
-              <span className="font-lagu text-xl text-white group-hover:text-amber-300 transition-colors mt-0.5">
+              <span className="font-lagu text-lg sm:text-xl text-white group-hover:text-amber-300 transition-colors mt-0.5">
                 {prevProject.title}
               </span>
             </Link>
@@ -280,10 +285,10 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
               href={`/projects/${nextProject.slug}`}
               className="group flex flex-col text-right"
             >
-              <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 group-hover:text-amber-400 transition-colors">
+              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-widest text-zinc-500 group-hover:text-amber-400 transition-colors">
                 Next Project →
               </span>
-              <span className="font-lagu text-xl text-white group-hover:text-amber-300 transition-colors mt-0.5">
+              <span className="font-lagu text-lg sm:text-xl text-white group-hover:text-amber-300 transition-colors mt-0.5">
                 {nextProject.title}
               </span>
             </Link>
