@@ -11,7 +11,7 @@ const jetbrainsMono = JetBrains_Mono({
 import CustomCursor from "@/components/shared/CustomCursor";
 
 export const metadata: Metadata = {
-  title: "Aqsa Zamzami // Fullstack Developer Portfolio",
+  title: "Aqsa Zamzami - Portfolio",
   description: "Portfolio of Aqsa Zamzami, a fullstack developer and software engineer. Selected projects, experience, and tech stack.",
 };
 

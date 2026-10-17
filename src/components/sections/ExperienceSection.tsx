@@ -26,14 +26,9 @@ export default function ExperienceSection() {
                   <span className="font-mono text-[11px] text-amber-400 tracking-widest">{exp.period}</span>
                 </div>
                 <p className="font-mono text-xs uppercase tracking-widest text-zinc-400 mt-1">{exp.company}</p>
-                <ul className="mt-3 space-y-1 text-sm text-zinc-400 list-disc list-inside marker:text-amber-400">
+                <ul className="mt-3 space-y-1.5 text-sm text-zinc-300 leading-relaxed list-disc list-inside marker:text-amber-400">
                   {exp.points.map((p) => <li key={p}>{p}</li>)}
                 </ul>
-                <div className="mt-4 flex gap-2">
-                  {exp.badges.map((b) => (
-                    <span key={b} className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 border border-amber-400/30 text-amber-300 bg-amber-400/5">{b}</span>
-                  ))}
-                </div>
               </div>
             </motion.div>
           ))}

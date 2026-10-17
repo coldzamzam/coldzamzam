@@ -23,7 +23,7 @@ export interface Experience {
   role: string;
   company: string;
   period: string;
-  badges: string[];
+  badges?: string[];
   points: string[];
 }
 

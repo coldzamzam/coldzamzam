@@ -161,35 +161,42 @@
   "experience": [
     {
       "id": "e1",
-      "role": "Fullstack Developer & System Builder",
-      "company": "Independent & Client Projects",
-      "period": "2024 - Present",
-      "badges": ["Fullstack", "Microservices", "System Architecture"],
+      "role": "Data Verification and Monitoring Officer",
+      "company": "Kemendikdasmen (Directorate of Elementary Education)",
+      "period": "2025 - 2026",
       "points": [
-        "Architected distributed and reactive web applications including PRIME (predictive maintenance monorepo) and Ardana (cooperative finance).",
-        "Researched and integrated modern data layers: TimescaleDB for time-series telemetry, Qdrant for vector search, and Redis for caching."
+        "Verified and validated educational assistance allocation data across primary schools under the 2025 National School Digitalization Program.",
+        "Monitored pre-construction and infrastructure readiness datasets across primary schools for the 2026 National School Revitalization Program."
       ]
     },
     {
       "id": "e2",
-      "role": "Backend & Database Engineering",
-      "company": "Academic & Campus Projects",
-      "period": "2023 - 2024",
-      "badges": ["Oracle 21c", "PL/SQL", "Webhooks & APIs"],
+      "role": "Head of Operations (2025) / Operations Staff (2024)",
+      "company": "ITechno (National IT Competition, PNJ)",
+      "period": "2024 - 2025",
       "points": [
-        "Engineered enterprise-grade retail inventory POS systems (InvenSync) using Oracle Database 21c triggers, sequences, and procedures.",
-        "Developed automated webhook payment verification pipelines for campus competition portals (Expasign), eliminating manual confirmation queues."
+        "Promoted to Head of Operations to lead end-to-end technical logistics, venue infrastructure, and field execution for a national-scale IT student competition.",
+        "Directed operational workflows and contingency handling across multi-category IT competition stages involving participants nationwide."
       ]
     },
     {
       "id": "e3",
-      "role": "Mobile & Algorithm Exploration",
-      "company": "Self-Initiated & Lab Research",
-      "period": "2023 - 2024",
-      "badges": ["Flutter", "P2P Sockets", "Decision Algorithms"],
+      "role": "Team Leader (Ketua Tim)",
+      "company": "Program Kreativitas Mahasiswa Kewirausahaan (PKM-K)",
+      "period": "2024",
       "points": [
-        "Built zero-configuration local peer-to-peer file transfer systems using Flutter and raw TCP socket streaming (ShareThem).",
-        "Implemented algorithmic Decision Support Systems implementing WASPAS multi-criteria matrix mathematics (PickyNet)."
+        "Led a student team in conceptualizing, formulating, and executing an innovative business initiative under the national PKM-K program.",
+        "Coordinated market feasibility analysis, budgeting, product development, and structured accountability reporting."
+      ]
+    },
+    {
+      "id": "e4",
+      "role": "Executive Board (BPH) - Research and BIP Division",
+      "company": "UKM Mapres and Research School, PNJ",
+      "period": "2023 - 2025",
+      "points": [
+        "Served on the central executive board across the Research Division (2024-2025) and BIP Division (2023-2024), organizing research and academic workshops.",
+        "Mentored student members in competitive scientific writing, research methodology frameworks, and innovation ideation."
       ]
     }
   ],
