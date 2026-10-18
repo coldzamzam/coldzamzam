@@ -4,8 +4,8 @@
     "roles": ["Fullstack Engineer", "Software Developer"],
     "tagline": "Building reliable backend architectures and fast, tactile web and mobile interfaces.",
     "bio": [
-      "I am a software engineer based in Indonesia. I spend my time digging into how software works under the hood, from raw socket streaming and database internals up to fluid 60fps UI engineering.",
-      "I focus on building resilient backend services and clean, responsive user interfaces. I believe good engineering should be transparent, fast, and satisfying to use."
+      "I am a software engineer based in Indonesia focused on building reliable backend architectures, well-structured relational databases, and responsive web and mobile applications.",
+      "I enjoy digging into how systems work under the hood and turning complex technical requirements into clean, fast, and practical software."
     ],
     "location": "Indonesia",
     "avatar": "/assets/pasfoto-aqsa.png",
@@ -38,7 +38,7 @@
         "/assets/prime/05-equipment.png",
         "/assets/prime/06-docker-services.png"
       ],
-      "github": "https://github.com/coldzamzam",
+      "github": "https://github.com/ZeroZennn/predictive-maintenance-monorepo",
       "demo": ""
     },
     {
@@ -61,7 +61,7 @@
         "/assets/ardana/04-transactions.png",
         "/assets/ardana/05-reports.png"
       ],
-      "github": "https://github.com/coldzamzam",
+      "github": "https://github.com/coldzamzam/ardana",
       "demo": ""
     },
     {
@@ -84,7 +84,7 @@
         "/assets/sharethem/04-active-transfer.png",
         "/assets/sharethem/05-settings.png"
       ],
-      "github": "https://github.com/coldzamzam",
+      "github": "https://github.com/coldzamzam/ShareThem",
       "demo": ""
     },
     {
@@ -108,7 +108,7 @@
         "/assets/expasign/5.png",
         "/assets/expasign/6.png"
       ],
-      "github": "https://github.com/coldzamzam",
+      "github": "https://github.com/imxey/expasign-react",
       "demo": ""
     },
     {
@@ -131,7 +131,7 @@
         "/assets/invensync/transactions.png",
         "/assets/invensync/report.png"
       ],
-      "github": "https://github.com/coldzamzam",
+      "github": "https://github.com/coldzamzam/InvenSync",
       "demo": ""
     },
     {
@@ -154,7 +154,7 @@
         "/assets/pickynet/team.png",
         "/assets/pickynet/welcome.png"
       ],
-      "github": "https://github.com/coldzamzam",
+      "github": "https://github.com/adenyuy/PickyNet",
       "demo": ""
     }
   ],

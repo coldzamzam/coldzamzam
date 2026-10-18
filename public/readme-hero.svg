@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 70" width="100%" height="70" role="img" aria-label="Hi, I am Zam">
+  <defs>
+    <style><![CDATA[
+      .c {
+        font-family: 'Fira Code', 'Courier New', Courier, monospace;
+        font-size: 30px;
+        font-weight: 700;
+        fill: #f59e0b;
+        opacity: 0;
+        transform: translateY(32px);
+        animation: charCycle 12s cubic-bezier(0.34, 1.56, 0.64, 1) infinite both;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .c {
+          fill: #fbbf24;
+        }
+      }
+
+      @keyframes charCycle {
+        0% {
+          opacity: 0;
+          transform: translateY(32px);
+        }
+        2.5% {
+          opacity: 1;
+          transform: translateY(-5px);
+        }
+        4% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        25% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        28% {
+          opacity: 0;
+          transform: translateY(-28px);
+        }
+        29%, 100% {
+          opacity: 0;
+          transform: translateY(32px);
+        }
+      }
+    ]]></style>
+  </defs>
+
+  <!-- Sequence 1: "Hi, I am Zam" -->
+  <g id="phrase1">
+    <text x="217" y="45" class="c" style="animation-delay: 0.00s;">H</text>
+    <text x="235" y="45" class="c" style="animation-delay: 0.04s;">i</text>
+    <text x="253" y="45" class="c" style="animation-delay: 0.08s;">,</text>
+    <text x="289" y="45" class="c" style="animation-delay: 0.16s;">I</text>
+    <text x="325" y="45" class="c" style="animation-delay: 0.24s;">a</text>
+    <text x="343" y="45" class="c" style="animation-delay: 0.28s;">m</text>
+    <text x="379" y="45" class="c" style="animation-delay: 0.36s;">Z</text>
+    <text x="397" y="45" class="c" style="animation-delay: 0.40s;">a</text>
+    <text x="415" y="45" class="c" style="animation-delay: 0.44s;">m</text>
+  </g>
+
+  <!-- Sequence 2: "Fullstack Engineer" -->
+  <g id="phrase2">
+    <text x="163" y="45" class="c" style="animation-delay: 4.00s;">F</text>
+    <text x="181" y="45" class="c" style="animation-delay: 4.04s;">u</text>
+    <text x="199" y="45" class="c" style="animation-delay: 4.08s;">l</text>
+    <text x="217" y="45" class="c" style="animation-delay: 4.12s;">l</text>
+    <text x="235" y="45" class="c" style="animation-delay: 4.16s;">s</text>
+    <text x="253" y="45" class="c" style="animation-delay: 4.20s;">t</text>
+    <text x="271" y="45" class="c" style="animation-delay: 4.24s;">a</text>
+    <text x="289" y="45" class="c" style="animation-delay: 4.28s;">c</text>
+    <text x="307" y="45" class="c" style="animation-delay: 4.32s;">k</text>
+    <text x="343" y="45" class="c" style="animation-delay: 4.40s;">E</text>
+    <text x="361" y="45" class="c" style="animation-delay: 4.44s;">n</text>
+    <text x="379" y="45" class="c" style="animation-delay: 4.48s;">g</text>
+    <text x="397" y="45" class="c" style="animation-delay: 4.52s;">i</text>
+    <text x="415" y="45" class="c" style="animation-delay: 4.56s;">n</text>
+    <text x="433" y="45" class="c" style="animation-delay: 4.60s;">e</text>
+    <text x="451" y="45" class="c" style="animation-delay: 4.64s;">e</text>
+    <text x="469" y="45" class="c" style="animation-delay: 4.68s;">r</text>
+  </g>
+
+  <!-- Sequence 3: "Software Developer" -->
+  <g id="phrase3">
+    <text x="163" y="45" class="c" style="animation-delay: 8.00s;">S</text>
+    <text x="181" y="45" class="c" style="animation-delay: 8.04s;">o</text>
+    <text x="199" y="45" class="c" style="animation-delay: 8.08s;">f</text>
+    <text x="217" y="45" class="c" style="animation-delay: 8.12s;">t</text>
+    <text x="235" y="45" class="c" style="animation-delay: 8.16s;">w</text>
+    <text x="253" y="45" class="c" style="animation-delay: 8.20s;">a</text>
+    <text x="271" y="45" class="c" style="animation-delay: 8.24s;">r</text>
+    <text x="289" y="45" class="c" style="animation-delay: 8.28s;">e</text>
+    <text x="325" y="45" class="c" style="animation-delay: 8.36s;">D</text>
+    <text x="343" y="45" class="c" style="animation-delay: 8.40s;">e</text>
+    <text x="361" y="45" class="c" style="animation-delay: 8.44s;">v</text>
+    <text x="379" y="45" class="c" style="animation-delay: 8.48s;">e</text>
+    <text x="397" y="45" class="c" style="animation-delay: 8.52s;">l</text>
+    <text x="415" y="45" class="c" style="animation-delay: 8.56s;">o</text>
+    <text x="433" y="45" class="c" style="animation-delay: 8.60s;">p</text>
+    <text x="451" y="45" class="c" style="animation-delay: 8.64s;">e</text>
+    <text x="469" y="45" class="c" style="animation-delay: 8.68s;">r</text>
+  </g>
+</svg>

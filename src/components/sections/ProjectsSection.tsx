@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ExternalLink, MoveRight } from "lucide-react";
+import { ExternalLink, Lock, MoveRight } from "lucide-react";
 import { PROJECTS, type Project } from "@/data/portfolio";
 import { SectionHeading } from "@/components/layout/SectionShell";
 import TechIcon from "@/components/shared/TechIcon";
@@ -614,7 +614,7 @@ function ProjectsDesktop() {
                   ))}
                 </div>
                 <div className="mt-5 sm:mt-8 flex flex-wrap items-center gap-2.5 sm:gap-3">
-                  {proj.github && (
+                  {proj.github && !proj.repoPrivate ? (
                     <a
                       href={proj.github}
                       target="_blank"
@@ -623,6 +623,10 @@ function ProjectsDesktop() {
                     >
                       <GithubIcon size={14} /> Repository
                     </a>
+                  ) : (
+                    <span className="inline-flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2 border border-white/15 bg-white/[0.02] text-zinc-400 font-mono text-[11px] sm:text-xs uppercase tracking-wider">
+                      <Lock size={13} className="text-zinc-500" /> Private Repo
+                    </span>
                   )}
                   <Link
                     href={`/projects/${proj.slug}`}

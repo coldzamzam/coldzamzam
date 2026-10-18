@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ExternalLink, Calendar, CheckCircle, Clock, BookOpen, Cpu, Sparkles } from "lucide-react";
+import { ArrowLeft, ExternalLink, Calendar, CheckCircle, Clock, BookOpen, Cpu, Lock, Sparkles } from "lucide-react";
 import { PROJECTS, type Project } from "@/data/portfolio";
 import TechIcon from "@/components/shared/TechIcon";
 
@@ -86,7 +86,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
 
             {/* Links */}
             <div className="flex items-center gap-3 shrink-0">
-              {project.github && (
+              {project.github && !project.repoPrivate ? (
                 <a
                   href={project.github}
                   target="_blank"
@@ -95,6 +95,10 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
                 >
                   <GithubIcon size={14} /> Repository
                 </a>
+              ) : (
+                <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/[0.02] border border-white/12 text-zinc-400 rounded-sm font-mono text-xs uppercase tracking-wider">
+                  <Lock size={13} className="text-zinc-500" /> Private Repo
+                </span>
               )}
               {project.demo && (
                 <a

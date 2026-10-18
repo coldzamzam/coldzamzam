@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, ExternalLink, Layers, Sparkles, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink, Layers, Lock, Sparkles, X } from "lucide-react";
 import { PROJECTS, type Project } from "@/data/portfolio";
 import { SectionHeading } from "@/components/layout/SectionShell";
 import TechIcon from "@/components/shared/TechIcon";
@@ -336,7 +336,7 @@ export default function ProjectsMobile() {
 
               {/* Sticky Bottom Sheet Actions */}
               <div className="shrink-0 p-4 sm:px-6 border-t border-white/[0.08] bg-[#090b10] flex items-center gap-3">
-                {selectedProject.github && (
+                {selectedProject.github && !selectedProject.repoPrivate ? (
                   <a
                     href={selectedProject.github}
                     target="_blank"
@@ -345,6 +345,10 @@ export default function ProjectsMobile() {
                   >
                     <GithubIcon size={14} /> Repository
                   </a>
+                ) : (
+                  <span className="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xs border border-white/12 bg-white/[0.02] font-mono text-xs uppercase tracking-wider text-zinc-400">
+                    <Lock size={13} className="text-zinc-500" /> Private Repo
+                  </span>
                 )}
                 <Link
                   href={`/projects/${selectedProject.slug}`}

@@ -15,6 +15,7 @@ export interface Project {
   coverImage: string;
   gallery?: string[];
   github?: string;
+  repoPrivate?: boolean;
   demo?: string;
 }
 
