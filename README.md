@@ -15,7 +15,7 @@
 <a href="mailto:zamaqsa99@gmail.com">
   <img src="https://img.shields.io/badge/Email-zamaqsa99%40gmail.com-D14836?style=flat-square&logo=gmail&logoColor=white" alt="Email"/>
 </a>
-<img src="https://komarev.com/ghpvc/?username=coldzamzam&style=flat-square&color=F59E0B&label=PROFILE+VIEWS" alt="Profile views"/>
+<img src="https://views.igorkowalczyk.dev/api/badge/coldzamzam?style=flat&color=f59e0b" alt="Profile views"/>
 
 </div>
 
