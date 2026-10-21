@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback, memo } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 
@@ -32,6 +32,66 @@ const LEVEL_CLASSES: Record<number, string> = {
   4: "bg-amber-300 border border-amber-200 shadow-[0_0_10px_rgba(251,191,36,0.6)]",
 };
 
+const CACHE_KEY = "gh_contrib_coldzamzam_v1";
+
+interface HeatmapGridProps {
+  weeks: ContributionDay[][];
+  contributions: ContributionDay[];
+  loading: boolean;
+  onHoverDay: (day: ContributionDay | null) => void;
+}
+
+/** Memoized 364-cell grid using event delegation (1 listener instead of 1,092, and 0 re-renders on hover). */
+const HeatmapGrid = memo(function HeatmapGrid({
+  weeks,
+  contributions,
+  loading,
+  onHoverDay,
+}: HeatmapGridProps) {
+  const handlePointer = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (loading) return;
+      const target = (e.target as HTMLElement).closest<HTMLElement>("[data-day-idx]");
+      if (!target) return;
+      const idx = Number(target.dataset.dayIdx);
+      const day = contributions[idx];
+      if (day) onHoverDay(day);
+    },
+    [contributions, loading, onHoverDay]
+  );
+
+  const handleLeave = useCallback(() => {
+    onHoverDay(null);
+  }, [onHoverDay]);
+
+  return (
+    <div
+      onMouseOver={handlePointer}
+      onClick={handlePointer}
+      onMouseLeave={handleLeave}
+      className={`inline-flex gap-[3px] p-1 bg-black/30 rounded-lg border border-white/[0.04] ${
+        loading ? "animate-pulse" : ""
+      }`}
+    >
+      {weeks.map((week, wIndex) => (
+        <div key={wIndex} className="flex flex-col gap-[3px]">
+          {week.map((day, dIndex) => {
+            const flatIndex = wIndex * 7 + dIndex;
+            const levelClass = LEVEL_CLASSES[day.level] ?? LEVEL_CLASSES[0];
+            return (
+              <div
+                key={day.date}
+                data-day-idx={flatIndex}
+                className={`w-[6px] h-[6px] rounded-[1.5px] transition-transform duration-150 hover:scale-150 hover:z-10 cursor-pointer ${levelClass}`}
+              />
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+});
+
 export default function GithubContributionCard() {
   const [data, setData] = useState<GitHubData>({
     total: { lastYear: 0 },
@@ -41,16 +101,47 @@ export default function GithubContributionCard() {
   const [hoveredDay, setHoveredDay] = useState<ContributionDay | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Fetch live contributions on mount
+  // Fetch live contributions with sessionStorage cache & non-blocking commit timing
   useEffect(() => {
     let active = true;
+    let commitTimer: ReturnType<typeof setTimeout> | undefined;
+
+    try {
+      const cached = sessionStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const parsed = JSON.parse(cached) as GitHubData;
+        if (parsed?.contributions?.length) {
+          setData(parsed);
+          setLoading(false);
+          return;
+        }
+      }
+    } catch {
+      // Ignore storage errors
+    }
+
+    const mountTime = performance.now();
+    // Wait until the Hero entrance animation finishes (~900ms) before swapping 364 cells
+    const ENTRANCE_BUFFER_MS = 900;
+
     fetch("https://github-contributions-api.jogruber.de/v4/coldzamzam?y=last")
       .then((res) => res.json())
-      .then((liveData) => {
-        if (active && liveData?.contributions?.length) {
+      .then((liveData: GitHubData) => {
+        if (!active || !liveData?.contributions?.length) return;
+        try {
+          sessionStorage.setItem(CACHE_KEY, JSON.stringify(liveData));
+        } catch {
+          // Ignore storage errors
+        }
+
+        const elapsed = performance.now() - mountTime;
+        const remaining = Math.max(0, ENTRANCE_BUFFER_MS - elapsed);
+
+        commitTimer = setTimeout(() => {
+          if (!active) return;
           setData(liveData);
           setLoading(false);
-        }
+        }, remaining);
       })
       .catch(() => {
         if (active) setLoading(false);
@@ -58,6 +149,7 @@ export default function GithubContributionCard() {
 
     return () => {
       active = false;
+      if (commitTimer) clearTimeout(commitTimer);
     };
   }, []);
 
@@ -79,7 +171,10 @@ export default function GithubContributionCard() {
     }
   }, [weeks]);
 
-  const totalCount = data.total?.lastYear ?? data.contributions.reduce((acc, c) => acc + c.count, 0);
+  const totalCount = useMemo(
+    () => data.total?.lastYear ?? data.contributions.reduce((acc, c) => acc + c.count, 0),
+    [data]
+  );
 
   // Find day with highest count
   const maxDay = useMemo(() => {
@@ -98,10 +193,10 @@ export default function GithubContributionCard() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.8, delay: 0.4 }}
-      className="min-w-0 w-full max-w-full sm:max-w-[500px] mx-auto lg:mx-0 hud-panel p-4 sm:p-6 rounded-xl border border-white/10 bg-[#12141a]/85 backdrop-blur-md shadow-[0_12px_40px_rgba(0,0,0,0.5)] overflow-hidden"
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.65, delay: 0.25 }}
+      className="min-w-0 w-full max-w-full sm:max-w-[500px] mx-auto lg:mx-0 hud-panel p-4 sm:p-6 rounded-xl border border-white/10 bg-[#12141a]/90 shadow-[0_12px_40px_rgba(0,0,0,0.5)] overflow-hidden"
     >
       {/* Header bar */}
       <div className="flex items-start justify-between gap-3 pb-3.5 sm:pb-4 border-b border-white/[0.08]">
@@ -156,24 +251,12 @@ export default function GithubContributionCard() {
       {/* Heatmap Grid */}
       <div className="relative py-1.5 sm:py-2 w-full max-w-full overflow-hidden">
         <div ref={scrollRef} className="w-full max-w-full overflow-x-auto pb-1 scrollbar-none">
-          <div className={`inline-flex gap-[3px] p-1 bg-black/30 rounded-lg border border-white/[0.04] ${loading ? "animate-pulse" : ""}`}>
-            {weeks.map((week, wIndex) => (
-              <div key={wIndex} className="flex flex-col gap-[3px]">
-                {week.map((day) => {
-                  const levelClass = LEVEL_CLASSES[day.level] ?? LEVEL_CLASSES[0];
-                  return (
-                    <div
-                      key={day.date}
-                      onMouseEnter={() => !loading && setHoveredDay(day)}
-                      onMouseLeave={() => setHoveredDay(null)}
-                      onClick={() => !loading && setHoveredDay(day)}
-                      className={`w-[6px] h-[6px] rounded-[1.5px] transition-transform duration-150 hover:scale-150 hover:z-10 cursor-pointer ${levelClass}`}
-                    />
-                  );
-                })}
-              </div>
-            ))}
-          </div>
+          <HeatmapGrid
+            weeks={weeks}
+            contributions={data.contributions}
+            loading={loading}
+            onHoverDay={setHoveredDay}
+          />
         </div>
       </div>
 
