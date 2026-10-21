@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, Calendar, CheckCircle, Clock, BookOpen, Cpu, Lock, Sparkles } from "lucide-react";
@@ -12,6 +13,44 @@ const GithubIcon = ({ size = 15 }: { size?: number }) => (
 
 export function generateStaticParams() {
   return PROJECTS.map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = PROJECTS.find((p) => p.slug === slug);
+  if (!project) {
+    return { title: "Project Not Found" };
+  }
+
+  return {
+    title: `${project.title} (${project.type})`,
+    description: project.desc,
+    alternates: {
+      canonical: `/projects/${project.slug}`,
+    },
+    openGraph: {
+      type: "article",
+      url: `https://aqs.my.id/projects/${project.slug}`,
+      title: `${project.title} · Case Study · Aqsa Zamzami`,
+      description: project.desc,
+      images: [
+        {
+          url: project.coverImage || "/og-image.png",
+          alt: `${project.title} Cover`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} · Case Study · Aqsa Zamzami`,
+      description: project.desc,
+      images: [project.coverImage || "/og-image.png"],
+    },
+  };
 }
 
 export default async function ProjectDetail({ params }: { params: Promise<{ slug: string }> }) {
