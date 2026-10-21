@@ -8,7 +8,7 @@
       "I enjoy digging into how systems work under the hood and turning complex technical requirements into clean, fast, and practical software."
     ],
     "location": "Indonesia",
-    "avatar": "/assets/pasfoto-aqsa.png",
+    "avatar": "/assets/pasfoto-aqsa.webp",
     "resumeUrl": "/cv-aqsa-zamzami.pdf",
     "stats": [
       { "label": "Featured Projects", "value": "06" },
@@ -29,14 +29,14 @@
       "contribution": "Engineered the RAG pipeline and interactive AI diagnostic chatbot. Indexed equipment service manuals and operating guides using Qdrant vector embeddings, built semantic search retrieval handlers, and integrated LLM responses so maintenance technicians can troubleshoot machine anomalies in real time.",
       "highlight": "RAG Retrieval Pipeline and AI Diagnostic Chatbot with Qdrant",
       "tech": ["Next.js", "Express", "Python", "Qdrant", "TimescaleDB", "Redis", "Docker", "Tailwind CSS"],
-      "coverImage": "/projects/prime.png",
+      "coverImage": "/projects/prime.webp",
       "gallery": [
-        "/assets/prime/01-dashboard.png",
-        "/assets/prime/02-landing.png",
-        "/assets/prime/03-telemetry.png",
-        "/assets/prime/04-predictions.png",
-        "/assets/prime/05-equipment.png",
-        "/assets/prime/06-docker-services.png"
+        "/assets/prime/01-dashboard.webp",
+        "/assets/prime/02-landing.webp",
+        "/assets/prime/03-telemetry.webp",
+        "/assets/prime/04-predictions.webp",
+        "/assets/prime/05-equipment.webp",
+        "/assets/prime/06-docker-services.webp"
       ],
       "github": "https://github.com/ZeroZennn/predictive-maintenance-monorepo",
       "demo": ""
@@ -53,13 +53,13 @@
       "contribution": "Designed the relational database schema in PostgreSQL with strict transactional consistency and ACID rollback safety. Engineered core backend services in Laravel 12 to handle member savings deposits, loan disbursement workflows, and automated interest installment calculations.",
       "highlight": "PostgreSQL Relational Ledger and Laravel 12 Backend Architecture",
       "tech": ["Laravel 12", "Inertia.js", "React 19", "Vite 7", "PostgreSQL", "Tailwind CSS"],
-      "coverImage": "/projects/ardana.png",
+      "coverImage": "/projects/ardana.webp",
       "gallery": [
-        "/assets/ardana/01-dashboard.png",
-        "/assets/ardana/02-loans.png",
-        "/assets/ardana/03-savings.png",
-        "/assets/ardana/04-transactions.png",
-        "/assets/ardana/05-reports.png"
+        "/assets/ardana/01-dashboard.webp",
+        "/assets/ardana/02-loans.webp",
+        "/assets/ardana/03-savings.webp",
+        "/assets/ardana/04-transactions.webp",
+        "/assets/ardana/05-reports.webp"
       ],
       "github": "https://github.com/coldzamzam/ardana",
       "demo": ""
@@ -76,13 +76,13 @@
       "contribution": "Designed and built the reactive mobile frontend in Flutter. Crafted the animated device discovery radar, responsive file selection workflows, and an interactive real-time bottom sheet that tracks transfer progress with fluid visual feedback.",
       "highlight": "Interactive Mobile UI and Real-Time Transfer Bottom-Sheet in Flutter",
       "tech": ["Flutter", "Dart", "Bonsoir (mDNS)", "Socket TCP/UDP", "Android"],
-      "coverImage": "/projects/sharethem.png",
+      "coverImage": "/projects/sharethem.webp",
       "gallery": [
-        "/assets/sharethem/01-transfer-modal.png",
-        "/assets/sharethem/02-device-discovery.png",
-        "/assets/sharethem/03-file-selection.png",
-        "/assets/sharethem/04-active-transfer.png",
-        "/assets/sharethem/05-settings.png"
+        "/assets/sharethem/01-transfer-modal.webp",
+        "/assets/sharethem/02-device-discovery.webp",
+        "/assets/sharethem/03-file-selection.webp",
+        "/assets/sharethem/04-active-transfer.webp",
+        "/assets/sharethem/05-settings.webp"
       ],
       "github": "https://github.com/coldzamzam/ShareThem",
       "demo": ""
@@ -99,14 +99,14 @@
       "contribution": "Developed the responsive web frontend using React and Tailwind CSS. Built dynamic multi-step registration forms for various competition categories, interactive pricing tiers, and real-time payment status indicator screens.",
       "highlight": "Responsive Multi-Category Registration and Checkout Frontend in React",
       "tech": ["PHP", "React", "Saweria Webhook API", "MySQL", "Tailwind CSS"],
-      "coverImage": "/projects/expasign.png",
+      "coverImage": "/projects/expasign.webp",
       "gallery": [
-        "/assets/expasign/1.png",
-        "/assets/expasign/2.png",
-        "/assets/expasign/3.png",
-        "/assets/expasign/4.png",
-        "/assets/expasign/5.png",
-        "/assets/expasign/6.png"
+        "/assets/expasign/1.webp",
+        "/assets/expasign/2.webp",
+        "/assets/expasign/3.webp",
+        "/assets/expasign/4.webp",
+        "/assets/expasign/5.webp",
+        "/assets/expasign/6.webp"
       ],
       "github": "https://github.com/imxey/expasign-react",
       "demo": ""
@@ -123,13 +123,13 @@
       "contribution": "Modeled the enterprise relational database schema on Oracle Database 21c and implemented the custom PHP MVC backend. Wrote native PL/SQL triggers for automated inventory audits, sequences for receipt tracking, and backend controllers for multi-table cashier transactions.",
       "highlight": "Oracle Database 21c PL/SQL Triggers and Custom PHP MVC Backend",
       "tech": ["PHP MVC", "Oracle Database 21c", "PL/SQL", "Tailwind CSS", "JavaScript"],
-      "coverImage": "/projects/invensync.png",
+      "coverImage": "/projects/invensync.webp",
       "gallery": [
-        "/assets/invensync/dashboard.png",
-        "/assets/invensync/cashier.png",
-        "/assets/invensync/inventory.png",
-        "/assets/invensync/transactions.png",
-        "/assets/invensync/report.png"
+        "/assets/invensync/dashboard.webp",
+        "/assets/invensync/cashier.webp",
+        "/assets/invensync/inventory.webp",
+        "/assets/invensync/transactions.webp",
+        "/assets/invensync/report.webp"
       ],
       "github": "https://github.com/coldzamzam/InvenSync",
       "demo": ""
@@ -146,13 +146,13 @@
       "contribution": "Implemented the core WASPAS mathematical decision engine in Laravel alongside the interactive user frontend. Programmed the matrix normalization (WSM) and exponential weighting (WPM) algorithms, and designed intuitive comparative result tables and ranking cards.",
       "highlight": "WASPAS Mathematical Decision Engine and Comparative Frontend",
       "tech": ["Laravel 12", "WASPAS Algorithm", "Alpine.js", "Tailwind CSS", "MySQL / SQLite"],
-      "coverImage": "/projects/pickynet.png",
+      "coverImage": "/projects/pickynet.webp",
       "gallery": [
-        "/assets/pickynet/home.png",
-        "/assets/pickynet/pick_waspas.png",
-        "/assets/pickynet/provider.png",
-        "/assets/pickynet/team.png",
-        "/assets/pickynet/welcome.png"
+        "/assets/pickynet/home.webp",
+        "/assets/pickynet/pick_waspas.webp",
+        "/assets/pickynet/provider.webp",
+        "/assets/pickynet/team.webp",
+        "/assets/pickynet/welcome.webp"
       ],
       "github": "https://github.com/adenyuy/PickyNet",
       "demo": ""
