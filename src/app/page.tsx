@@ -18,7 +18,6 @@ const ContactSection = dynamic(() => import("@/components/sections/ContactSectio
 export default function Home() {
   const { state } = useLoadingSequence();
   const ready = state === "EXITING" || state === "DONE";
-  const showBelowFold = state === "DONE";
 
   return (
     <main className="relative w-full min-h-screen">
@@ -30,7 +29,7 @@ export default function Home() {
       {/* Short intro overlay */}
       <AnimatePresence>{!ready && <SplashScreen key="splash" />}</AnimatePresence>
 
-      {/* Main content: Hero mounts first on reveal, below-the-fold sections mount once splash completes */}
+      {/* Main content: Hero mounts synchronously on reveal, below-the-fold sections stream in via next/dynamic */}
       {ready && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -41,15 +40,11 @@ export default function Home() {
           <ScrollProgress />
           <Navbar />
           <HeroSection />
-          {showBelowFold && (
-            <>
-              <ProjectsSection />
-              <ExperienceSection />
-              <TechStackSection />
-              <AboutSection />
-              <ContactSection />
-            </>
-          )}
+          <ProjectsSection />
+          <ExperienceSection />
+          <TechStackSection />
+          <AboutSection />
+          <ContactSection />
         </motion.div>
       )}
     </main>
