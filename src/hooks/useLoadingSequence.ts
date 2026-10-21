@@ -1,39 +1,44 @@
 import { useState, useEffect } from "react";
 
-export type SplashState = "BLACK" | "LOADING" | "EXITING" | "DONE";
+export type SplashState = "LOADING" | "EXITING" | "DONE";
 
-const LOAD_MS = 1400;
+export const SPLASH_LOAD_MS = 650;
+const SPLASH_HOLD_MS = 120;
+const SPLASH_EXIT_MS = 350;
+const SESSION_KEY = "splash_seen";
 
-/** Short intro sequence: BLACK -> LOADING (progress 0..100) -> EXITING -> DONE. */
+/** Snappy intro sequence: LOADING -> EXITING -> DONE (skipped on repeat visits in the same tab). */
 export function useLoadingSequence() {
-  const [state, setState] = useState<SplashState>("BLACK");
-  const [progress, setProgress] = useState(0);
+  const [state, setState] = useState<SplashState>("LOADING");
 
   useEffect(() => {
-    let timer: ReturnType<typeof setTimeout> | undefined;
-
-    if (state === "BLACK") {
-      timer = setTimeout(() => setState("LOADING"), 200);
-    } else if (state === "LOADING") {
-      const intervalMs = 30;
-      const step = 100 / (LOAD_MS / intervalMs);
-      const interval = setInterval(() => {
-        setProgress((p) => Math.min(100, p + step));
-      }, intervalMs);
-      return () => clearInterval(interval);
-    } else if (state === "EXITING") {
-      timer = setTimeout(() => setState("DONE"), 700);
+    try {
+      if (sessionStorage.getItem(SESSION_KEY) === "1") {
+        setState("DONE");
+        return;
+      }
+    } catch {
+      // Ignore storage access errors
     }
 
-    return () => clearTimeout(timer);
-  }, [state]);
+    const exitTimer = setTimeout(() => {
+      setState("EXITING");
+      try {
+        sessionStorage.setItem(SESSION_KEY, "1");
+      } catch {
+        // Ignore storage access errors
+      }
+    }, SPLASH_LOAD_MS + SPLASH_HOLD_MS);
 
-  // Short pause at 100% before revealing the page
-  useEffect(() => {
-    if (state !== "LOADING" || progress < 100) return;
-    const timer = setTimeout(() => setState("EXITING"), 300);
-    return () => clearTimeout(timer);
-  }, [state, progress]);
+    const doneTimer = setTimeout(() => {
+      setState("DONE");
+    }, SPLASH_LOAD_MS + SPLASH_HOLD_MS + SPLASH_EXIT_MS);
 
-  return { state, progress };
+    return () => {
+      clearTimeout(exitTimer);
+      clearTimeout(doneTimer);
+    };
+  }, []);
+
+  return { state };
 }

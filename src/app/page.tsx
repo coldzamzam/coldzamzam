@@ -1,21 +1,24 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useLoadingSequence } from "@/hooks/useLoadingSequence";
 import SplashScreen from "@/components/splash/SplashScreen";
 import SceneBackground from "@/components/scene/SceneBackground";
 import HeroSection from "@/components/hero/HeroSection";
 import Navbar from "@/components/navbar/Navbar";
 import ScrollProgress from "@/components/shared/ScrollProgress";
-import ProjectsSection from "@/components/sections/ProjectsSection";
-import ExperienceSection from "@/components/sections/ExperienceSection";
-import TechStackSection from "@/components/sections/TechStackSection";
-import AboutSection from "@/components/sections/AboutSection";
-import ContactSection from "@/components/sections/ContactSection";
 import { motion, AnimatePresence } from "framer-motion";
 
+const ProjectsSection = dynamic(() => import("@/components/sections/ProjectsSection"));
+const ExperienceSection = dynamic(() => import("@/components/sections/ExperienceSection"));
+const TechStackSection = dynamic(() => import("@/components/sections/TechStackSection"));
+const AboutSection = dynamic(() => import("@/components/sections/AboutSection"));
+const ContactSection = dynamic(() => import("@/components/sections/ContactSection"));
+
 export default function Home() {
-  const { state, progress } = useLoadingSequence();
+  const { state } = useLoadingSequence();
   const ready = state === "EXITING" || state === "DONE";
+  const showBelowFold = state === "DONE";
 
   return (
     <main className="relative w-full min-h-screen">
@@ -25,24 +28,28 @@ export default function Home() {
       </div>
 
       {/* Short intro overlay */}
-      <AnimatePresence>{!ready && <SplashScreen key="splash" progress={progress} />}</AnimatePresence>
+      <AnimatePresence>{!ready && <SplashScreen key="splash" />}</AnimatePresence>
 
-      {/* Main content: vertical page, Projects scrolls horizontally while pinned */}
+      {/* Main content: Hero mounts first on reveal, below-the-fold sections mount once splash completes */}
       {ready && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
           className="relative w-full z-10"
         >
           <ScrollProgress />
           <Navbar />
           <HeroSection />
-          <ProjectsSection />
-          <ExperienceSection />
-          <TechStackSection />
-          <AboutSection />
-          <ContactSection />
+          {showBelowFold && (
+            <>
+              <ProjectsSection />
+              <ExperienceSection />
+              <TechStackSection />
+              <AboutSection />
+              <ContactSection />
+            </>
+          )}
         </motion.div>
       )}
     </main>
