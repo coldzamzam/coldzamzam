@@ -6,32 +6,48 @@ import { motion } from "framer-motion";
 export default function SceneBackground() {
   const spotRef = useRef<HTMLDivElement>(null);
 
-  // Mouse-follow spotlight, updated directly in the DOM (no re-renders)
+  // GPU-composited mouse-follow spotlight using translate3d + rAF throttling (zero repaint)
   useEffect(() => {
-    const onMove = (e: MouseEvent) => {
+    if (typeof window === "undefined" || window.matchMedia("(hover: none)").matches) return;
+
+    let raf = 0;
+    let targetX = -9999;
+    let targetY = -9999;
+
+    const updateSpot = () => {
+      raf = 0;
       if (spotRef.current) {
-        spotRef.current.style.background = `radial-gradient(480px circle at ${e.clientX}px ${e.clientY}px, rgba(245,158,11,0.035), transparent 70%)`;
+        spotRef.current.style.transform = `translate3d(${targetX - 340}px, ${targetY - 340}px, 0)`;
       }
     };
+
+    const onMove = (e: MouseEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      if (!raf) {
+        raf = requestAnimationFrame(updateSpot);
+      }
+    };
+
     window.addEventListener("mousemove", onMove, { passive: true });
-    return () => window.removeEventListener("mousemove", onMove);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
     <div className="fixed inset-0 z-[-1] bg-[#0a0b0e] overflow-hidden">
-      {/* Deep base gradient */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,#151820_0%,#0a0b0e_60%,#050607_100%)]" />
-
-      {/* Subtle warm ambient glow */}
-      <motion.div
-        className="absolute -top-[15%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-amber-500/[0.035] blur-[140px]"
-        animate={{ x: [0, 80, 0], y: [0, 60, 0] }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute -bottom-[20%] -right-[10%] w-[45vw] h-[45vw] rounded-full bg-zinc-700/[0.04] blur-[140px]"
-        animate={{ x: [0, -70, 0], y: [0, -50, 0] }}
-        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+      {/* Deep base gradient + soft ambient glows baked into radial gradients (no expensive blur-[140px] filters) */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: [
+            "radial-gradient(50vw 50vw at 10% 10%, rgba(245,158,11,0.04), transparent 70%)",
+            "radial-gradient(45vw 45vw at 90% 90%, rgba(82,82,91,0.05), transparent 70%)",
+            "radial-gradient(ellipse at 50% 0%, #151820 0%, #0a0b0e 60%, #050607 100%)",
+          ].join(", "),
+        }}
       />
 
       {/* Clean neutral grid, faded towards the edges */}
@@ -45,19 +61,26 @@ export default function SceneBackground() {
         }}
       />
 
-      {/* Gentle warm horizon scan beam */}
+      {/* Gentle warm horizon scan beam using GPU transform (y) instead of layout-triggering top */}
       <motion.div
-        className="absolute inset-x-0 h-24 pointer-events-none"
-        initial={{ top: "-10%" }}
-        animate={{ top: "110%" }}
+        className="absolute top-0 inset-x-0 h-24 pointer-events-none will-change-transform"
+        initial={{ y: "-15vh" }}
+        animate={{ y: "115vh" }}
         transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-amber-500/[0.015]" />
         <div className="absolute bottom-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-amber-400/20 to-transparent" />
       </motion.div>
 
-      {/* Cursor spotlight */}
-      <div ref={spotRef} className="absolute inset-0 pointer-events-none" />
+      {/* Cursor spotlight (GPU-composited via translate3d) */}
+      <div
+        ref={spotRef}
+        className="hidden md:block absolute top-0 left-0 w-[680px] h-[680px] rounded-full pointer-events-none will-change-transform"
+        style={{
+          transform: "translate3d(-9999px, -9999px, 0)",
+          background: "radial-gradient(circle, rgba(245,158,11,0.038) 0%, transparent 70%)",
+        }}
+      />
 
       {/* Vignette */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.65)_100%)] pointer-events-none" />
