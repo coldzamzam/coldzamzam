@@ -466,6 +466,7 @@ function ProjectsDesktop() {
                           alt={p.title}
                           className="w-full h-full object-cover object-top"
                           loading="lazy"
+                          decoding="async"
                         />
                         <span className="absolute top-2 left-2 px-2 py-0.5 bg-black/75 border border-white/15 font-mono text-[9px] uppercase tracking-widest text-amber-400">
                           Cover
@@ -501,6 +502,8 @@ function ProjectsDesktop() {
               ref={baseCoverImgRef}
               src={proj.coverImage}
               alt={proj.title}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover object-top will-change-transform"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent pointer-events-none" />
@@ -554,6 +557,8 @@ function ProjectsDesktop() {
                     <img
                       src={src}
                       alt=""
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-auto max-h-[58vh] md:max-h-[66vh] object-contain block mx-auto"
                     />
                   </div>
